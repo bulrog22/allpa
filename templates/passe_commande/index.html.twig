@@ -6,7 +6,7 @@
 {% if jour_distribs is empty %}
     <div class="col-md-12">
         <div class="callout callout-danger">
-            <h5>Ya pas de pain !</h5>
+            <h5>C'est vide !</h5>
 
             <p>Il n'y a pas de commande en cours !</p>
         </div>
@@ -30,10 +30,10 @@
                     <tbody>
                     {% for jour_distrib in jour_distribs %}
                         {% if jour_distrib.date|date('Y-m-d') >= "now"|date('Y-m-d') %}
-                            {% if jour_distrib.poidRestant < jour_distrib.total and jour_distrib.date|date('Y-m-d') > "now"|date('Y-m-d') and jour_distrib.closed == false %}
+                            {% if (jour_distrib.poidRestant < jour_distrib.total or jour_distrib.total == 0) and jour_distrib.date|date('Y-m-d') > "now"|date('Y-m-d') and jour_distrib.closed == false %}
                                 <tr onclick="document.location = '{{ path('passe_commande_new', {'idJourDistrib': jour_distrib.id}) }}';">
                                     <td>{{ jour_distrib.date|format_datetime('full', 'none', locale='fr') }}</td>
-                                    <td>{{ (jour_distrib.total - jour_distrib.poidRestant)|round(1, 'ceil')|default(0)}} kg</td>
+                                    {% if jour_distrib.total != 0 %}<td>{{ (jour_distrib.total - jour_distrib.poidRestant)|round(1, 'ceil')|default(0)}} kg</td>{% else %} <td>Pas de limite</td>{% endif %}
                                 </tr>
                             {% else %}
                                 <tr class="table-warning">
@@ -48,7 +48,7 @@
                         {% endif %}
                     {% else %}
                         <tr>
-                            <td colspan="2">Ya pas d'pain !</td>
+                            <td colspan="2">C'est vide !</td>
                         </tr>
                     {% endfor %}
                     </tbody>

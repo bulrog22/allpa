@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\LigneCommande;
-use App\Entity\Pain;
+use App\Entity\Product;
 use App\Repository\JourDistribRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,13 +18,13 @@ class LigneCommandeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pain', EntityType::class, [
-                'class' => Pain::class,
-                'choice_label' => function (Pain $pain = null) {
-                    return $pain->getNom() . " - " . $pain->getPoid() . " kg" . " - " . $pain->getPrix() . " €";
+            ->add('product', EntityType::class, [
+                'class' => Product::class,
+                'choice_label' => function (Product $product = null) {
+                    return $product->getNom() . " - " . $product->getConditionnement() . " kg" . " - " . $product->getPrixInit() . " €";
                 },
                 'choice_value' => 'id',
-                'choices' => $options['pains'],
+                'choices' => $options['products'],
                 'label' => false,
                 'required' => true,
             ])
@@ -42,7 +42,7 @@ class LigneCommandeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => LigneCommande::class,
-            'pains' => Pains::class,
+            'products' => Products::class,
         ]);
     }
 }

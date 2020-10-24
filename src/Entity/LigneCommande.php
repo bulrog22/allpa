@@ -27,9 +27,9 @@ class LigneCommande
     private $commande;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pain", inversedBy="ligneCommandes", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="ligneCommandes")
      */
-    private $pain;
+    private $product;
 
     public function getId(): ?int
     {
@@ -60,14 +60,14 @@ class LigneCommande
         return $this;
     }
 
-    public function getPain(): ?Pain
+    public function getProduct(): ?Product
     {
-        return $this->pain;
+        return $this->product;
     }
 
-    public function setPain(?Pain $pain): self
+    public function setProduct(?Product $product): self
     {
-        $this->pain = $pain;
+        $this->product = $product;
 
         return $this;
     }

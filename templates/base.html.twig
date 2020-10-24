@@ -68,46 +68,40 @@
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fas fa-tools"></i>
                                     <p>
-                                        Administration
+                                        {{ 'menu.admin.title'|trans }}
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
 
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ path('pain_index') }}" class="nav-link active">
+                                        <a href="{{ path('product_index') }}" class="nav-link active">
                                             <i class="fas fa-bread-slice nav-icon"></i>
-                                            <p>Ajouter des pains</p>
+                                            <p>{{ 'menu.admin.add_product'|trans }}</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ path('jour_distrib_index') }}" class="nav-link active">
                                             <i class="far fa-calendar-alt nav-icon"></i>
-                                            <p>Jours de Distribution</p>
+                                            <p>{{ 'menu.admin.add_day'|trans }}</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ path('synthese_index', {'suivi': 1 }) }}" class="nav-link active">
                                             <i class="fas fa-bicycle nav-icon"></i>
-                                            <p>Suivi livraison</p>
+                                            <p>{{ 'menu.admin.delivery'|trans }}</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ path('synthese_index', {'suivi': 2 }) }}" class="nav-link active">
                                             <i class="fas fa-list-ul nav-icon"></i>
-                                            <p>Toutes les commandes</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ path('synthese_poids') }}" class="nav-link active">
-                                            <i class="fas fa-balance-scale-right nav-icon"></i>
-                                            <p>Synthèse des poids</p>
+                                            <p>{{ 'menu.admin.all_command'|trans }}</p>
                                         </a>
                                     </li>
                                     <li class="nav-item has-treeview">
                                         <a href="#" class="nav-link active">
                                             <i class="fas fa-tools nav-icon"></i>
-                                            <p>Paramètres
+                                            <p>{{ 'menu.admin.parameter.title'|trans }}
                                             <i class="right fas fa-angle-left"></i>
                                             </p>
                                         </a>
@@ -116,13 +110,13 @@
                                             <li class="nav-item">
                                                 <a href="{{ path('settings_index') }}" class="nav-link active">
                                                     <i class="fas fa-cogs nav-icon"></i>
-                                                    <p>Configuration</p>
+                                                    <p>{{ 'menu.admin.parameter.config'|trans }}</p>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
                                                 <a href="{{ path('user_index') }}" class="nav-link active">
                                                     <i class="fas fa-users nav-icon"></i>
-                                                    <p>Utilisateurs</p>
+                                                    <p>{{ 'menu.admin.parameter.user'|trans }}</p>
                                                 </a>
                                             </li>
                                         </ul>
@@ -133,25 +127,25 @@
                             <li class="nav-item">
                                 <a href="{{ path('commande_index') }}" class="nav-link active danger">
                                     <i class="fas fa-bookmark nav-icon"></i>
-                                    <p>Ma dernière Commande</p>
+                                    <p>{{ 'menu.my_last_command'|trans }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ path('synthese_index', {'suivi': 0 }) }}" class="nav-link active danger">
                                     <i class="fas fa-list-ul nav-icon"></i>
-                                    <p>Synthèse des Commandes</p>
+                                    <p>{{ 'menu.synthesis'|trans }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ path('passe_commande_index') }}" class="nav-link active danger">
                                     <i class="fas fa-shopping-bag nav-icon"></i>
-                                    <p>Passer Commandes</p>
+                                    <p>{{ 'menu.order'|trans }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ path('app_login') }}" class="nav-link active danger">
                                     <i class="fas fa-key nav-icon"></i>
-                                    <p>Connexion</p>
+                                    <p>{{ 'menu.connexion'|trans }}</p>
                                 </a>
                             </li>
                         </ul>

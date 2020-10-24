@@ -7,7 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 use App\Entity\Commande;
-use App\Entity\Pain;
+use App\Entity\product;
 use App\Entity\LigneCommande;
 
 /**
@@ -62,38 +62,38 @@ class JourDistribRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function findPoid()
+    public function findConditionnement()
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT c.id, p.id, j.total, SUM(p.poid) as total_commande
+            'SELECT c.id, p.id, j.total, SUM(p.conditionnement) as total_commande
             FROM App\Entity\JourDistrib j
             INNER JOIN j.commandes c
             INNER JOIN c.ligneCommandes lc
-            INNER JOIN lc.pain p
+            INNER JOIN lc.product p
             GROUP BY c.id, j.total, p.id'
         );
 
         return $query->getResult();
     }
 
-    public function findPoidPains( $jourDistribId, $painId )
+    public function findConditionnementProducts( $jourDistribId, $productId )
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT SUM(p.poid*lc.quantite) as poid
+            'SELECT SUM(p.conditionnement*lc.quantite) as conditionnement
             FROM App\Entity\JourDistrib j
             INNER JOIN j.commandes c
             INNER JOIN c.ligneCommandes lc
-            INNER JOIN lc.pain p
+            INNER JOIN lc.product p
             WHERE j.id = :jourDistribId
-            AND p.id = :painId
+            AND p.id = :productId
             GROUP BY p.id'
             )
             ->setParameter('jourDistribId', $jourDistribId)
-            ->setParameter('painId', $painId);
+            ->setParameter('productId', $productId);
 
         return $query->getResult();
     }

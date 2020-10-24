@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="NwguaN_" resname="January">
+        <source>January</source>
+        <target>Janvier</target>
+      </trans-unit>
+      <trans-unit id="yHfG.0B" resname="February">
+        <source>February</source>
+        <target>Février</target>
+      </trans-unit>
+      <trans-unit id="nZWizw1" resname="March">
+        <source>March</source>
+        <target>Mars</target>
+      </trans-unit>
+      <trans-unit id="Sv5uoVD" resname="April">
+        <source>April</source>
+        <target>Avril</target>
+      </trans-unit>
+      <trans-unit id="jHj_W5k" resname="May">
+        <source>May</source>
+        <target>Mai</target>
+      </trans-unit>
+      <trans-unit id="1YCMDgp" resname="June">
+        <source>June</source>
+        <target>Juin</target>
+      </trans-unit>
+      <trans-unit id="6c96HKS" resname="July">
+        <source>July</source>
+        <target>Juillet</target>
+      </trans-unit>
+      <trans-unit id="bPsX5S8" resname="Juillet">
+        <source>Juillet</source>
+        <target>Août</target>
+      </trans-unit>
+      <trans-unit id="zVWeoKv" resname="September">
+        <source>September</source>
+        <target>Septembre</target>
+      </trans-unit>
+      <trans-unit id="neb_HXJ" resname="November">
+        <source>November</source>
+        <target>Novembre</target>
+      </trans-unit>
+      <trans-unit id="j7IEykY" resname="December">
+        <source>December</source>
+        <target>Décembre</target>
+      </trans-unit>
+      <trans-unit id="agDfwdy" resname="Monday">
+        <source>Monday</source>
+        <target>Lundi</target>
+      </trans-unit>
+      <trans-unit id="fYrx3hJ" resname="Tuesday">
+        <source>Tuesday</source>
+        <target>Mardi</target>
+      </trans-unit>
+      <trans-unit id="wKbMgpz" resname="Wednesday">
+        <source>Wednesday</source>
+        <target>Mercredi</target>
+      </trans-unit>
+      <trans-unit id=".CZiBi." resname="Thursday">
+        <source>Thursday</source>
+        <target>Jeudi</target>
+      </trans-unit>
+      <trans-unit id="4h8.Nyp" resname="Friday">
+        <source>Friday</source>
+        <target>Vendredi</target>
+      </trans-unit>
+      <trans-unit id="2_Ncc2P" resname="Saturday">
+        <source>Saturday</source>
+        <target>Samedi</target>
+      </trans-unit>
+      <trans-unit id="hz.vdg5" resname="Sunday">
+        <source>Sunday</source>
+        <target>Dimanche</target>
+      </trans-unit>
+      <trans-unit id="w.CmQP9" resname="delete_message">
+        <source>delete_message</source>
+        <target>Es-tu sur de vouloir le supprimer ?</target>
+      </trans-unit>
+      <trans-unit id="S9k1S7Z" resname="warning">
+        <source>warning</source>
+        <target>Attention !!!</target>
+      </trans-unit>
+      <trans-unit id="ruQIhH0" resname="success">
+        <source>success</source>
+        <target>C'est enregistré !</target>
+      </trans-unit>
+      <trans-unit id="dChNncv" resname="color">
+        <source>color</source>
+        <target>Couleur</target>
+      </trans-unit>
+      <trans-unit id="NZjOb5Z" resname="logo">
+        <source>logo</source>
+        <target>Logo de l’application</target>
+      </trans-unit>
+      <trans-unit id="q9qRrg4" resname="welcome_text">
+        <source>welcome_text</source>
+        <target>Message d'accueil</target>
+      </trans-unit>
+      <trans-unit id="gqNTf.D" resname="name">
+        <source>name</source>
+        <target>Nom de l’application</target>
+      </trans-unit>
+      <trans-unit id="6ucWUVk" resname="contact_email">
+        <source>contact_email</source>
+        <target>Email de contact</target>
+      </trans-unit>
+      <trans-unit id="BTIzGB_" resname="favicon">
+        <source>favicon</source>
+        <target>Favicon du site</target>
+      </trans-unit>
+      <trans-unit id="0Ifz6ik" resname="menu.admin.title">
+        <source>menu.admin.title</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="kjpHk4y" resname="menu.admin.add_product">
+        <source>menu.admin.add_product</source>
+        <target>Ajouter un produit</target>
+      </trans-unit>
+      <trans-unit id="0IHBIwP" resname="menu.admin.add_day">
+        <source>menu.admin.add_day</source>
+        <target>Jour de distribution</target>
+      </trans-unit>
+      <trans-unit id="VXK.A6Z" resname="menu.admin.delivery">
+        <source>menu.admin.delivery</source>
+        <target>Suivi de livraison</target>
+      </trans-unit>
+      <trans-unit id="rjfRPkS" resname="menu.admin.all_command">
+        <source>menu.admin.all_command</source>
+        <target>Toute les commandes</target>
+      </trans-unit>
+      <trans-unit id="t7fj9xg" resname="menu.admin.synthesis">
+        <source>menu.admin.synthesis</source>
+        <target>Synthèse</target>
+      </trans-unit>
+      <trans-unit id="fsoveq9" resname="menu.admin.parameter.title">
+        <source>menu.admin.parameter.title</source>
+        <target>Paramètres</target>
+      </trans-unit>
+      <trans-unit id="rpwdXf5" resname="menu.admin.parameter.config">
+        <source>menu.admin.parameter.config</source>
+        <target>Configuration</target>
+      </trans-unit>
+      <trans-unit id="PUbhUyP" resname="menu.admin.parameter.user">
+        <source>menu.admin.parameter.user</source>
+        <target>Utilisateurs</target>
+      </trans-unit>
+      <trans-unit id="NBaSFNw" resname="menu.my_last_command">
+        <source>menu.my_last_command</source>
+        <target>Ma dernière commande</target>
+      </trans-unit>
+      <trans-unit id="uY4hH48" resname="menu.synthesis">
+        <source>menu.synthesis</source>
+        <target>Synthèse des commandes</target>
+      </trans-unit>
+      <trans-unit id="oj7gM8K" resname="menu.order">
+        <source>menu.order</source>
+        <target>Passer commande</target>
+      </trans-unit>
+      <trans-unit id="PNTGOXm" resname="menu.connexion">
+        <source>menu.connexion</source>
+        <target>Connexion</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

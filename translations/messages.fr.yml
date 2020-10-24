@@ -30,3 +30,20 @@ welcome_text: "Message d'accueil"
 name: "Nom de l’application"
 contact_email: "Email de contact"
 favicon: "Favicon du site"
+
+menu:
+  admin:
+    title: Administration
+    add_product: Ajouter un produit
+    add_day: Jour de distribution
+    delivery: Suivi de livraison
+    all_command: Toute les commandes
+    synthesis: Synthèse
+    parameter:
+      title: Paramètres
+      config: Configuration
+      user: Utilisateurs
+  my_last_command: Ma dernière commande
+  synthesis: Synthèse des commandes
+  order: Passer commande
+  connexion: Connexion

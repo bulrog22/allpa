@@ -38,7 +38,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/pain, roles: ROLE_USER }
+        - { path: ^/product, roles: ROLE_USER }
         - { path: ^/jour, roles: ROLE_USER }
         - { path: ^/synthese/1, roles: ROLE_USER }
         - { path: ^/synthese/2, roles: ROLE_USER }

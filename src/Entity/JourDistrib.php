@@ -24,11 +24,6 @@ class JourDistrib
     private $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pain", inversedBy="jourDistribs")
-     */
-    private $pains;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Commande", mappedBy="jourDistrib", cascade={"persist", "remove"})
      */
     private $commandes;
@@ -48,10 +43,15 @@ class JourDistrib
      */
     private $closed;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="jourDistribs")
+     */
+    private $products;
+
     public function __construct()
     {
-        $this->pains = new ArrayCollection();
         $this->commandes = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,24 +78,6 @@ class JourDistrib
     public function getPains(): Collection
     {
         return $this->pains;
-    }
-
-    public function addPain(Pain $pain): self
-    {
-        if (!$this->pains->contains($pain)) {
-            $this->pains[] = $pain;
-        }
-
-        return $this;
-    }
-
-    public function removePain(Pain $pain): self
-    {
-        if ($this->pains->contains($pain)) {
-            $this->pains->removeElement($pain);
-        }
-
-        return $this;
     }
 
     /**
@@ -170,6 +152,34 @@ class JourDistrib
     public function setClosed(?bool $closed): self
     {
         $this->closed = $closed;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addJourDistrib($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            $product->removeJourDistrib($this);
+        }
 
         return $this;
     }

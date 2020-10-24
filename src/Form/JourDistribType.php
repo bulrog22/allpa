@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\JourDistrib;
-use App\Entity\Pain;
+use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,10 +23,10 @@ class JourDistribType extends AbstractType
         ]);
         if ($options['edit']){
             $builder
-                ->add('pains', EntityType::class, [
-                    'class' => Pain::class,
-                    'choice_label' => function (Pain $pain = null) {
-                        return $pain->getNom() . " - " . $pain->getPoid() . "kg";
+                ->add('products', EntityType::class, [
+                    'class' => Product::class,
+                    'choice_label' => function (Product $product = null) {
+                        return $product->getNom() . " - " . $product->getConditionnement() . "kg";
                     },
                     'choice_value' => 'id',
                     'multiple' => true,
@@ -35,10 +35,10 @@ class JourDistribType extends AbstractType
         }
         else {
             $builder
-                ->add('pains', EntityType::class, [
-                    'class' => Pain::class,
-                    'choice_label' => function (Pain $pain = null) {
-                        return $pain->getNom() . " - " . $pain->getPoid() . "kg";
+                ->add('products', EntityType::class, [
+                    'class' => Product::class,
+                    'choice_label' => function (Product $product = null) {
+                        return $product->getNom() . " - " . $product->getConditionnement() . "kg";
                     },
                     'choice_value' => 'id',
                     'multiple' => true,
@@ -58,7 +58,7 @@ class JourDistribType extends AbstractType
                 // 'model_timezone' => 'Europe/Paris',
             ])
             ->add('total', NumberType::class,[
-                'label' => 'Poid total de la fournée (en kg)'
+                'label' => 'Poid total de la commande (en kg)'
             ])
             ;
     }

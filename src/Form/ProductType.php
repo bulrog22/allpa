@@ -2,27 +2,27 @@
 
 namespace App\Form;
 
-use App\Entity\Pain;
+use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class PainType extends AbstractType
+class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('nom')
-            ->add('poid')
-            ->add('prix')
+            ->add('conditionnement')
+            ->add('prixInit')
+            ->add('prixFinal')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Pain::class,
+            'data_class' => Product::class,
         ]);
     }
 }

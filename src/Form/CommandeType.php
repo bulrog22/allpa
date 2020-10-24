@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Commande;
-use App\Entity\Pain;
+use App\Entity\Product;
 use App\Entity\LigneCommande;
 use App\Entity\JourDistrib;
 use Symfony\Component\Form\AbstractType;
@@ -55,7 +55,7 @@ class CommandeType extends AbstractType
             ])
             ->add('ligneCommandes', CollectionType::class, [
                 'entry_type'   => LigneCommandeType::class,
-                'entry_options' => ['label' => false, 'pains' => $options['pains']],
+                'entry_options' => ['label' => false, 'products' => $options['products']],
                 'label' => false,
                 'allow_add'    => true,
                 'allow_delete' => true,
@@ -79,7 +79,7 @@ class CommandeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Commande::class,
             'idJourDistrib' => 1,
-            'pains' => Pain::class,
+            'products' => Product::class,
             'jourDistrib' => JourDistrib::class,
             'lastNom' => null,
             'lastPrenom' => null,

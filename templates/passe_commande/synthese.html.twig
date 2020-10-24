@@ -75,7 +75,7 @@
                                     <td>{{ total }} €</td>
                                     <td>
                                         {% if suivi == 1 %}
-                                            <a href="{{ path('livree_commande', { commandeId: commande.id }) }}" onclick="return confirm('Tu lui as vraiment donné son pain ?')"><i class="fas fa-check"></i></a>
+                                            <a href="{{ path('livree_commande', { commandeId: commande.id }) }}" onclick="return confirm('Tu lui as vraiment donné ?')"><i class="fas fa-check"></i></a>
                                         {% else %}
                                             {{ include('commande/_delete_form.html.twig') }}
                                         {% endif %}

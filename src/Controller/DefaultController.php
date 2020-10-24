@@ -8,7 +8,7 @@ use App\Entity\JourDistrib;
 
 use App\Repository\CommandeRepository;
 use App\Repository\JourDistribRepository;
-use App\Repository\PainRepository;
+use App\Repository\ProductRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ class DefaultController extends AbstractController
             'lastNom' => $this->session->get('commande_nom'),
             'lastPrenom' => $this->session->get('commande_prenom'),
             'jour_distribs' => $jourDistribs,
-            'poid_restant' => $jourDistribRepository->findPoid(),
+            'poid_restant' => $jourDistribRepository->findConditionnement(),
         ]);
     }
 
@@ -85,49 +85,13 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/synthesepoids", name="synthese_poids", methods={"GET"})
-     */
-    public function synthesePoids(JourDistribRepository $jourDistribRepository, PainRepository $painRepository): Response
-    {
-        $jourDistribs = $jourDistribRepository->findAllOrder('DESC');
-        $dates = [];
-        foreach ($jourDistribs as $jourDistrib ) {
-            
-            $painsJour = [];
-            
-            $pains = $painRepository->findAll();
-            foreach ($pains as $pain) {
-                $poid = $jourDistribRepository->findPoidPains($jourDistrib->getId(), $pain->getId() );
-                if (is_array( $poid )){
-                    
-                    $poidPain = [ "nom" => $pain->getNom() . " - " . $pain->getPoid() . " kg" ];
-                    $poidPain += [ "id" => $pain->getId() ];
-                    $poidPain += [ "poid" => $jourDistribRepository->findPoidPains($jourDistrib->getId(), $pain->getId() ) ];
-                    
-                }
-                array_push($painsJour, $poidPain);
-            }
-            $date = [ 
-                "date" => $jourDistrib->getDate(),
-                "pains" => $painsJour,
-            ];
-            array_push($dates, $date);
-        }
-        // dump ($dates);
-        // die;
-        return $this->render('passe_commande/synthese_poids.html.twig', [
-            'poidsDates' => $dates,
-        ]);
-    }
-
-    /**
      * @Route("/new/{idJourDistrib}", name="passe_commande_new", methods={"GET","POST"})
      */
     public function new(Request $request, int $idJourDistrib, JourDistribRepository $jourDistribRepository): Response
     {
         $commande = new Commande();
         $jourDistrib = $jourDistribRepository->findOneById($idJourDistrib);
-        $pains = $jourDistrib->getPains();
+        $products = $jourDistrib->getProducts();
         if ( $jourDistrib->getClosed() === false ) {
 
             $request = Request::createFromGlobals();
@@ -141,7 +105,7 @@ class DefaultController extends AbstractController
             }
     
             $form = $this->createForm(CommandeType::class, $commande, [
-                'pains' => $pains, 
+                'products' => $products, 
                 'idJourDistrib' => $idJourDistrib, 
                 'jourDistrib' => $jourDistrib,
                 'lastNom' => $nom,
@@ -150,10 +114,10 @@ class DefaultController extends AbstractController
             $form->handleRequest($request);
             
             if ($form->isSubmitted() && $form->isValid()) {
-                // On récupère la somme des poids des pain de la commande
+                // On récupère la somme des poids des product de la commande
                 $poidCommande = 0;
                 foreach ($form->getData()->getLigneCommandes() as $ligneCommande ){
-                    $poidCommande += $ligneCommande->getPain()->getPoid() * floatval($ligneCommande->getQuantite());
+                    $poidCommande += $ligneCommande->getproduct()->getPoid() * floatval($ligneCommande->getQuantite());
                 }
                 
                 // On additionne avec le poid restant du jour
@@ -198,7 +162,7 @@ class DefaultController extends AbstractController
             return $this->render('commande/new.html.twig', [
                 'commande' => $commande,
                 'form' => $form->createView(),
-                'pains' => $pains,
+                'products' => $products,
                 'idJourDistrib' => $jourDistrib,
             ]);
         } 

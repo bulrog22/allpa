@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PainRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
-class Pain
+class Product
 {
     /**
      * @ORM\Id()
@@ -26,26 +26,31 @@ class Pain
     /**
      * @ORM\Column(type="float")
      */
-    private $poid;
+    private $conditionnement;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $prix;
+    private $prixInit;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LigneCommande", mappedBy="pain", cascade={"persist"})
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $prixFinal;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\LigneCommande", mappedBy="product")
      */
     private $ligneCommandes;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\JourDistrib", mappedBy="pains")
+     * @ORM\ManyToMany(targetEntity="App\Entity\JourDistrib", mappedBy="products")
      */
     private $jourDistribs;
 
     public function __construct()
     {
-        $this->ligneCommande1s = new ArrayCollection();
+        $this->ligneCommandes = new ArrayCollection();
         $this->jourDistribs = new ArrayCollection();
     }
 
@@ -66,26 +71,38 @@ class Pain
         return $this;
     }
 
-    public function getPoid(): ?float
+    public function getConditionnement(): ?float
     {
-        return $this->poid;
+        return $this->conditionnement;
     }
 
-    public function setPoid(float $poid): self
+    public function setConditionnement(float $conditionnement): self
     {
-        $this->poid = $poid;
+        $this->conditionnement = $conditionnement;
 
         return $this;
     }
 
-    public function getPrix(): ?float
+    public function getPrixInit(): ?float
     {
-        return $this->prix;
+        return $this->prixInit;
     }
 
-    public function setPrix(float $prix): self
+    public function setPrixInit(float $prixInit): self
     {
-        $this->prix = $prix;
+        $this->prixInit = $prixInit;
+
+        return $this;
+    }
+
+    public function getPrixFinal(): ?float
+    {
+        return $this->prixFinal;
+    }
+
+    public function setPrixFinal(?float $prixFinal): self
+    {
+        $this->prixFinal = $prixFinal;
 
         return $this;
     }
@@ -102,7 +119,7 @@ class Pain
     {
         if (!$this->ligneCommandes->contains($ligneCommande)) {
             $this->ligneCommandes[] = $ligneCommande;
-            $ligneCommande->setPain($this);
+            $ligneCommande->setProduct($this);
         }
 
         return $this;
@@ -113,8 +130,8 @@ class Pain
         if ($this->ligneCommandes->contains($ligneCommande)) {
             $this->ligneCommandes->removeElement($ligneCommande);
             // set the owning side to null (unless already changed)
-            if ($ligneCommande->getPain() === $this) {
-                $ligneCommande->setPain(null);
+            if ($ligneCommande->getProduct() === $this) {
+                $ligneCommande->setProduct(null);
             }
         }
 
@@ -133,7 +150,6 @@ class Pain
     {
         if (!$this->jourDistribs->contains($jourDistrib)) {
             $this->jourDistribs[] = $jourDistrib;
-            $jourDistrib->addPain($this);
         }
 
         return $this;
@@ -143,7 +159,6 @@ class Pain
     {
         if ($this->jourDistribs->contains($jourDistrib)) {
             $this->jourDistribs->removeElement($jourDistrib);
-            $jourDistrib->removePain($this);
         }
 
         return $this;
