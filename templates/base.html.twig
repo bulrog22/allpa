@@ -38,12 +38,44 @@
 
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto">
+                {% if app.user %}
+                    <li class="nav-item dropdown user-menu">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            <span class="d-none d-md-inline">{{ app.user.prenom }} {{ app.user.nom }}</span>
+                            {# <span class="d-none d-md-inline">{{ dump(app.user) }}</span> #}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <!-- User image -->
+                            <li class="user-header bg-{{ options_settings.get('color') }}">
+                                <i class="fas fa-user img-circle elevation-2"></i>
+                                <p>
+                                {{ app.user.prenom }} {{ app.user.nom }}
+                                <small>{{ app.user.mail }}</small>
+                                <small>{{ app.user.phone }}</small>
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{ path('app_logout') }}">Déconnexion</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}" role="button">
+                            <i class="fas fa-key nav-icon"></i>
+                        </a>
+                    </li>
+                {% endif %}
                     <li class="nav-item">
                         {{ options_settings.getObfuscatedEmailLink(options_settings.get('contact_email')) | raw }}
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i class="fas fa-th-large"></i></a>
                     </li>
+
                 </ul>
             </nav>
             <!-- /.navbar -->
@@ -63,7 +95,7 @@
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-flat" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-                            {% if is_granted('ROLE_USER') %}
+                            {% if is_granted('ROLE_ADMIN') %}
                             <li class="nav-item has-treeview menu-open">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fas fa-tools"></i>
@@ -86,11 +118,29 @@
                                             <p>{{ 'menu.admin.add_day'|trans }}</p>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="{{ path('synthese_index', {'suivi': 1 }) }}" class="nav-link active">
+                                    <li class="nav-item has-treeview">
+                                        <a href="#" class="nav-link active">
                                             <i class="fas fa-bicycle nav-icon"></i>
                                             <p>{{ 'menu.admin.delivery'|trans }}</p>
+                                            <i class="right fas fa-angle-left"></i>
+                                            </p>
                                         </a>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ path('livraison', {'type': 'product'}) }}" class="nav-link active">
+                                                    <i class="fas fa-lemon nav-icon"></i>
+                                                    <p>{{ 'menu.admin.delivery_by_product'|trans }}</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <ul class="nav nav-treeview">
+                                            <li class="nav-item">
+                                                <a href="{{ path('livraison', {'type': 'command'}) }}" class="nav-link active">
+                                                    <i class="fas fa-file-invoice nav-icon"></i>
+                                                    <p>{{ 'menu.admin.delivery_by_command'|trans }}</p>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ path('synthese_index', {'suivi': 2 }) }}" class="nav-link active">
@@ -124,6 +174,7 @@
                                 </ul>
                             </li>
                             {% endif %}
+                            {% if is_granted('ROLE_USER') %}
                             <li class="nav-item">
                                 <a href="{{ path('commande_index') }}" class="nav-link active danger">
                                     <i class="fas fa-bookmark nav-icon"></i>
@@ -142,12 +193,7 @@
                                     <p>{{ 'menu.order'|trans }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ path('app_login') }}" class="nav-link active danger">
-                                    <i class="fas fa-key nav-icon"></i>
-                                    <p>{{ 'menu.connexion'|trans }}</p>
-                                </a>
-                            </li>
+                            {% endif %}
                         </ul>
                     </nav>
                 <!-- /.sidebar-menu -->
@@ -189,10 +235,8 @@
                             </div>
                         </div>
                         <div class="row">
-
                             {% block body %}
                             {% endblock %}
-
                         </div>
                         <!-- /.row -->
                     </div><!-- /.container-fluid -->

@@ -70,6 +70,9 @@ class CommandeType extends AbstractType
             ->add('livree', HiddenType::class, [
                 'data' => 0,
             ])
+            ->add('confirmed', HiddenType::class, [
+                'data' => 0,
+            ])
             // ->addEventListener(FormEvents::PRE_SUBMIT, $listener);
         ;
     }

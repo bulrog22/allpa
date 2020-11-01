@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\IntegerToLocalizedStringTransformer;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class LigneCommandeType extends AbstractType
 {
@@ -33,7 +34,9 @@ class LigneCommandeType extends AbstractType
                 'attr' => array('min' => 1),
                 'data' => 1,
             ])
-
+            ->add('livree', HiddenType::class, [
+                'data' => 0,
+            ])
 
         ;
     }

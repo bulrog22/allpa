@@ -48,6 +48,16 @@ class Commande
      */
     private $commentaire;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $confirmed;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $date;
+
     public function __construct()
     {
         $this->ligneCommandes = new ArrayCollection();
@@ -145,6 +155,30 @@ class Commande
     public function setCommentaire(?string $commentaire): self
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getconfirmed(): ?bool
+    {
+        return $this->confirmed;
+    }
+
+    public function setconfirmed(?bool $confirmed): self
+    {
+        $this->confirmed = $confirmed;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

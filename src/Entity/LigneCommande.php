@@ -31,6 +31,11 @@ class LigneCommande
      */
     private $product;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $livree;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +73,18 @@ class LigneCommande
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getLivree(): ?bool
+    {
+        return $this->livree;
+    }
+
+    public function setLivree(?bool $livree): self
+    {
+        $this->livree = $livree;
 
         return $this;
     }

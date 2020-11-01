@@ -20,27 +20,32 @@
 
                     <thead>
                         <tr>
-                            <th>Pain</th>
+                            <th>Produit</th>
                             <th>Nb</th>
-                            <th>Prix</th>
-                            <th></th>
+                            <th>Prix Initial</th>
+                            <th>Prix Final</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% set total = 0 %}
+                    {% set totalInit = 0 %}
+                    {% set totalFinal = 0 %}
                     {% for ligne_commande in commande.lignecommandes %}
-                        {% set somme = ligne_commande.quantite*ligne_commande.pain.prix %}
-                        {% set total = total+somme %}
+                        {% set sommeInit = ligne_commande.quantite*ligne_commande.product.prixInit %}
+                        {% set sommeFinal = ligne_commande.quantite*ligne_commande.product.prixfinal %}
+                        {% set totalInit = totalInit+sommeInit %}
+                        {% set totalFinal = totalFinal+sommeFinal %}
                         <tr>
-                            <td>{{ ligne_commande.pain.nom }} - {{ ligne_commande.pain.poid }}kg</td>
+                            <td>{{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}kg</td>
                             <td>{{ ligne_commande.quantite }}</td>
-                            <td>{{ somme }} €</td>
+                            <td>{{ sommeInit }} €</td>
+                            <td>{{ sommeFinal }} €</td>
                             <td>{{ include('ligne_commande/_delete_form.html.twig') }}</td>
                         </tr>
                     {% endfor %}
                         <tr>
                             <td colspan=2 align=right>Total</td>
-                            <td>{{ total }}€</td>
+                            <td>{{ totalInit }}€</td>
+                            <td>{{ totalFinal }}€</td>
                             <td></td>
                         </tr>
                     </tbody>

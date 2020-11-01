@@ -65,6 +65,7 @@ class CommandeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager = $this->getDoctrine()->getManager();
+            $commande->setDate(date());
             $entityManager->persist($commande);
             $entityManager->flush();
 

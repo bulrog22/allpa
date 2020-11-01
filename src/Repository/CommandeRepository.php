@@ -19,6 +19,19 @@ class CommandeRepository extends ServiceEntityRepository
         parent::__construct($registry, Commande::class);
     }
 
+    public function testLigneNonLivree( Commande $commande )
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(lc.id)')
+            ->join('c.ligneCommandes','lc')
+            ->andWhere('c = :cId')
+            ->andWhere('lc.livree is null')
+            ->setParameter('cId', $commande)
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
+
     // /**
     //  * @return Commande[] Returns an array of Commande objects
     //  */

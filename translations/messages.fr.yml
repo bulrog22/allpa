@@ -35,14 +35,17 @@ menu:
   admin:
     title: Administration
     add_product: Ajouter un produit
-    add_day: Jour de distribution
+    add_day: Jour de commande
     delivery: Suivi de livraison
+    delivery_by_product: Par produits
+    delivery_by_command: Par commandes
     all_command: Toute les commandes
     synthesis: Synthèse
     parameter:
       title: Paramètres
       config: Configuration
       user: Utilisateurs
+    
   my_last_command: Ma dernière commande
   synthesis: Synthèse des commandes
   order: Passer commande

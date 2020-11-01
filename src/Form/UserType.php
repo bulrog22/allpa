@@ -21,6 +21,9 @@ class UserType extends AbstractType
                 ],
             ])
             ->add('password')
+            ->add('confirmPassword', PasswordType::class)
+            ->add('mail')
+            ->add('phone')
         ;
     }
 

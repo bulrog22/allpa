@@ -1,23 +1,7 @@
 {% extends 'base.html.twig' %}
-    {% block title %}
-        {% if suivi == 1 %}
-            Suivi de livrason
-        {% elseif suivi == 0 %}
-            Sythèse des commandes
-        {% else %}
-            Sythèse des commandes par date
-        {% endif %}
-    {% endblock %}
+{% block titre_page %}<h3 class="s-0 text-dark">Suivi livraison par commande</h3>{% endblock %}
 
-    {% block titre_page %}
-        {% if suivi == 1 %}
-            <h3 class="s-0 text-dark">Suivi de livraison</h3>
-        {% elseif suivi == 0 %}
-            <h3 class="s-0 text-dark">Sythèse des commandes</h3>
-        {% else %}
-            <h3 class="s-0 text-dark">Toutes les commandes par date</h3>
-        {% endif %}
-    {% endblock %}
+{% block title %}Suivi livraison par commande{% endblock %}
 
 {% block stylesheets %}
   <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -28,14 +12,8 @@
 {% block body %}
 <div class="col-md-12">
 {% for jour_distrib in jour_distribs %}
-    {% if jour_distrib.date|date('Y-m-d') >= "now"|date('Y-m-d') or suivi == 1 or suivi == 2 %}
-        {% if suivi == 2 %}
-            <div class="card">
-        {% elseif suivi == 1 and jour_distrib.date|date('Y-m-d') != "now"|date('Y-m-d') %}
-            <div class="card collapsed-card">
-        {% else %}
-            <div class="card">
-        {% endif %}
+    {% if jour_distrib.date|date('Y-m-d') >= "now"|date('Y-m-d') %}
+    <div class="card">
         <div class="card-header border-transparent">
             <h3 class="card-title">{{ jour_distrib.date|format_datetime('full', 'none', locale='fr') }}</h3>
             <div class="card-tools">
@@ -55,21 +33,14 @@
                             <th>Produit</th>
                             <th>Prix Initial</th>
                             <th>Prix Final</th>
-                            {% if suivi == 1 %}
-                            <th></th>
-                            {% else %}
-                            <th>Paiement reçu</th>
                             <th>Livrée</th>
-                            <th></th>
-                            {% endif %}
-
                         </tr>
                     </thead>
                     <tbody>
                     {% if jour_distrib.commandes is defined %}
                         {% for commande in jour_distrib.commandes %}
 
-                            {% if commande.livree == null or suivi == 0 or suivi == 2 %}
+                            {% if commande.livree == null%}
                                 {% set totalInit = 0 %}
                                 {% set totalFinal = 0 %}
                                 {% set sommeInit = 0 %}
@@ -89,34 +60,15 @@
                                         {% set sommeFinal = ligne_commande.quantite*ligne_commande.product.prixFinal %}
                                         {% set totalInit = totalInit+sommeInit %}
                                         {% set totalFinal = totalFinal+sommeFinal %}
-                                        <p>{{ ligne_commande.quantite}} {{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}kg </p>
+                                        <p>{{ ligne_commande.quantite}} {{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}kg 
+                                        {% if ligne_commande.livree %}<span class="badge bg-success">Livrée</span>{% else %}<span class="badge bg-danger">A prendre</span>{% endif %}</p>
                                     {% endfor %}
                                     </td>
                                     <td>{{ totalInit }} €</td>
                                     <td>{{ totalFinal }} €</td>
-                                        {% if suivi == 1 %}
-                                        <td>
-                                                <a href="{{ path('livree_commande', { commande: commande.id }) }}" onclick="return confirm('Tu lui as vraiment donné ?')"><i class="fas fa-check"></i></a>
-                                        </td>
-                                        {% else %}
-                                        <td class="center">
-                                            {% if commande.confirmed %}
-                                                <i class="fas fa-check-square"></i><span class='d-none'>1</span>
-                                            {% else %}
-                                            <a href="{{ path('livree_confirme', { commande: commande.id }) }}" onclick="return confirm('Tu lui as vraiment reçu le chèque ?')"><i class="far fa-square"></i></a>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if commande.livree %}
-                                                <i class="fas fa-check-square"></i><span class='d-none'>1</span>
-                                            {% else %}
-                                                <i class="far fa-square"></i>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {{ include('commande/_delete_form.html.twig') }}
-                                        </td>
-                                        {% endif %}
+                                    <td>
+                                        <a href="{{ path('livree_commande', { commande: commande.id }) }}" onclick="return confirm('Tu lui as vraiment donné ?')"><i class="fas fa-check"></i></a>
+                                    </td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
@@ -128,12 +80,10 @@
     </div>
     {% endif %}
 {% else %}
-    <div class="col-md-12">
-        <div class="callout callout-danger">
-            <h5>Ya pas de commande !</h5>
+    <div class="callout callout-danger">
+        <h5>Ya pas de commande !</h5>
 
-            <p>Personne n'a passer de commande</p>
-        </div>
+        <p>Personne n'a passer de commande</p>
     </div>
 {% endfor %}
 

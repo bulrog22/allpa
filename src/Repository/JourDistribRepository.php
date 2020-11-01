@@ -49,17 +49,18 @@ class JourDistribRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         
         $now = date('Y-m-d');
-
-        $query = $entityManager->createQuery(
-            'SELECT j
-            FROM App\Entity\JourDistrib j
-            WHERE j.date >= :dateNow
-            ORDER BY j.date ASC'
-        )
-        ->setParameter('dateNow', $now);
-
-
-        return $query->getResult();
+        
+        
+        return $this->createQueryBuilder('j')
+            ->join('j.commandes','c')
+            ->andWhere('c.confirmed = true')
+            ->andWhere('c.livree = false')
+            ->andWhere('j.date >= :dateNow')
+            ->setParameter('dateNow', $now)
+            ->orderBy('j.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     public function findConditionnement()

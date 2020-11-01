@@ -123,7 +123,7 @@
       </trans-unit>
       <trans-unit id="0IHBIwP" resname="menu.admin.add_day">
         <source>menu.admin.add_day</source>
-        <target>Jour de distribution</target>
+        <target>Jour de commande</target>
       </trans-unit>
       <trans-unit id="VXK.A6Z" resname="menu.admin.delivery">
         <source>menu.admin.delivery</source>
