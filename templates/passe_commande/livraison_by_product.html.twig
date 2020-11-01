@@ -52,7 +52,7 @@
                                     {% if ligneCommande.livree == null%}
                                         <tr class="table">
                                             <td>{{ ligneCommande.commande.id }}</td>
-                                            <td>{{ ligneCommande.commande.prenom }} {{ ligneCommande.commande.nom }}</br><i><small>{{ ligneCommande.commande.commentaire }}</small></small></td>
+                                            <td>{{ ligneCommande.commande.user.prenom }} {{ ligneCommande.commande.user.nom }}</br><i><small>{{ ligneCommande.commande.commentaire }}</small></small></td>
                                             <td>
                                                 <p>{{ ligneCommande.quantite}} {{ ligneCommande.product.nom }} - {{ ligneCommande.product.conditionnement }}kg </p>
                                             </td>

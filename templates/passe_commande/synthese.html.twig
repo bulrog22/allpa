@@ -3,9 +3,9 @@
         {% if suivi == 1 %}
             Suivi de livrason
         {% elseif suivi == 0 %}
-            Sythèse des commandes
+            Toutes mes commandes
         {% else %}
-            Sythèse des commandes par date
+            Synthèse des commandes par date
         {% endif %}
     {% endblock %}
 
@@ -13,7 +13,7 @@
         {% if suivi == 1 %}
             <h3 class="s-0 text-dark">Suivi de livraison</h3>
         {% elseif suivi == 0 %}
-            <h3 class="s-0 text-dark">Sythèse des commandes</h3>
+            <h3 class="s-0 text-dark">Toutes mes commandes</h3>
         {% else %}
             <h3 class="s-0 text-dark">Toutes les commandes par date</h3>
         {% endif %}
@@ -28,14 +28,13 @@
 {% block body %}
 <div class="col-md-12">
 {% for jour_distrib in jour_distribs %}
-    {% if jour_distrib.date|date('Y-m-d') >= "now"|date('Y-m-d') or suivi == 1 or suivi == 2 %}
-        {% if suivi == 2 %}
-            <div class="card">
-        {% elseif suivi == 1 and jour_distrib.date|date('Y-m-d') != "now"|date('Y-m-d') %}
-            <div class="card collapsed-card">
-        {% else %}
-            <div class="card">
-        {% endif %}
+    {% if suivi == 2 %}
+        <div class="card">
+    {% elseif suivi == 1 and jour_distrib.date|date('Y-m-d') != "now"|date('Y-m-d') %}
+        <div class="card collapsed-card">
+    {% else %}
+        <div class="card">
+    {% endif %}
         <div class="card-header border-transparent">
             <h3 class="card-title">{{ jour_distrib.date|format_datetime('full', 'none', locale='fr') }}</h3>
             <div class="card-tools">
@@ -57,11 +56,11 @@
                             <th>Prix Final</th>
                             {% if suivi == 1 %}
                             <th></th>
-                            {% else %}
+                            {% elseif suivi == 2 %}
                             <th>Paiement reçu</th>
                             <th>Livrée</th>
-                            <th></th>
                             {% endif %}
+                            <th></th>
 
                         </tr>
                     </thead>
@@ -69,7 +68,7 @@
                     {% if jour_distrib.commandes is defined %}
                         {% for commande in jour_distrib.commandes %}
 
-                            {% if commande.livree == null or suivi == 0 or suivi == 2 %}
+                            {% if ((commande.livree == false or suivi == 0) and commande.user == app.user) or suivi == 2  %}
                                 {% set totalInit = 0 %}
                                 {% set totalFinal = 0 %}
                                 {% set sommeInit = 0 %}
@@ -82,14 +81,16 @@
                                 <tr class="table-danger">
                                 {% endif %}
                                     <td>{{ commande.id }}</td>
-                                    <td>{{ commande.prenom }} {{ commande.nom }}</br><i><small>{{ commande.commentaire }}</small></small></td>
+                                    <td>{{ commande.user.prenom }} {{ commande.user.nom }}</br><i><small>{{ commande.commentaire }}</small></small></td>
                                     <td>
                                     {% for ligne_commande in commande.ligneCommandes %}
                                         {% set sommeInit = ligne_commande.quantite*ligne_commande.product.prixInit %}
                                         {% set sommeFinal = ligne_commande.quantite*ligne_commande.product.prixFinal %}
                                         {% set totalInit = totalInit+sommeInit %}
                                         {% set totalFinal = totalFinal+sommeFinal %}
-                                        <p>{{ ligne_commande.quantite}} {{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}kg </p>
+                                        <p>{{ ligne_commande.quantite}} {{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}kg 
+                                        {% if commande.confirmed %} {% if ligne_commande.livree %}<span class="badge bg-success">Livrée</span>{% else %}<span class="badge bg-danger">A prendre</span>{% endif %}{% endif %}</p>
+                                        </p>
                                     {% endfor %}
                                     </td>
                                     <td>{{ totalInit }} €</td>
@@ -98,12 +99,12 @@
                                         <td>
                                                 <a href="{{ path('livree_commande', { commande: commande.id }) }}" onclick="return confirm('Tu lui as vraiment donné ?')"><i class="fas fa-check"></i></a>
                                         </td>
-                                        {% else %}
+                                        {% elseif suivi == 2 %}
                                         <td class="center">
                                             {% if commande.confirmed %}
                                                 <i class="fas fa-check-square"></i><span class='d-none'>1</span>
                                             {% else %}
-                                            <a href="{{ path('livree_confirme', { commande: commande.id }) }}" onclick="return confirm('Tu lui as vraiment reçu le chèque ?')"><i class="far fa-square"></i></a>
+                                                <a href="{{ path('livree_confirme', { commande: commande.id }) }}" onclick="return confirm('Tu lui as vraiment reçu le chèque ?')"><i class="far fa-square"></i></a>
                                             {% endif %}
                                         </td>
                                         <td>
@@ -113,10 +114,20 @@
                                                 <i class="far fa-square"></i>
                                             {% endif %}
                                         </td>
-                                        <td>
-                                            {{ include('commande/_delete_form.html.twig') }}
-                                        </td>
                                         {% endif %}
+                                        <td>
+                                            {% if commande.livree == false %}
+                                                {% if jour_distrib.date|date('Y-m-d') >= "now"|date('Y-m-d') %}
+                                                {{ include('commande/_delete_form.html.twig') }}
+                                                {% endif %}
+                                            
+                                            {% if commande.confirmed == true %} 
+                                            <span class="badge bg-warning">Validée</span>{% endif %}
+
+                                            {% else %}
+                                            <span class="badge bg-success">Livrée</span>
+                                            {% endif %}
+                                        </td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
@@ -126,7 +137,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
 {% else %}
     <div class="col-md-12">
         <div class="callout callout-danger">

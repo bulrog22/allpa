@@ -16,11 +16,16 @@
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0">
 
-                <table  class="table table-hover text-nowrap">
+                <table class="table data-table table-hover text-nowrap" id="tableau">
                     <thead>
                         <tr>
                             <th>id</th>
                             <th>Username</th>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Role</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,6 +33,13 @@
                         <tr onclick="document.location = '{{ path('user_show', {'id': user.id}) }}';">
                             <td>{{ user.id }}</td>
                             <td>{{ user.username }}</td>
+                            <td>{{ user.nom }}</td>
+                            <td>{{ user.prenom }}</td>
+                            <td>{{ user.mail }}</td>
+                            <td>{{ user.phone }}</td>
+                            <td>
+                                {% for role in user.roles %} {{ role|trans }}</br> {% endfor %}
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
@@ -39,4 +51,28 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script>
+    $(function () {
+        $('#tableau').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+        "language": {
+            "url": "/French.json"
+        },
+        "order": [[ 0, "asc" ]],
+        });
+    });
+    </script>
 {% endblock %}

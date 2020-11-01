@@ -1,8 +1,5 @@
 {{ form_start(form) }}
     {# {{ form_row(form.description) }} #}
-
-    {{ form_row(form.nom) }}
-    {{ form_row(form.prenom) }}
     
     <ul class="ligneCommandes" data-prototype="{{ form_widget(form.ligneCommandes.vars.prototype)|e('html_attr') }}">
         {% for ligne in form.ligneCommandes %}

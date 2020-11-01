@@ -25,7 +25,7 @@ class CommandeRepository extends ServiceEntityRepository
             ->select('COUNT(lc.id)')
             ->join('c.ligneCommandes','lc')
             ->andWhere('c = :cId')
-            ->andWhere('lc.livree is null')
+            ->andWhere('lc.livree = false')
             ->setParameter('cId', $commande)
             ->getQuery()
             ->getSingleScalarResult()

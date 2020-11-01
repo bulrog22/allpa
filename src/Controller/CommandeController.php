@@ -71,8 +71,8 @@ class CommandeController extends AbstractController
 
             $cookieValue = [
                 'command_id' => $commande->getId(),
-                'nom' => $commande->getNom(),
-                'prenom' => $commande->getPrenom(),
+                'nom' => $commande->getUser()->getNom(),
+                'prenom' => $commande->getUser()->getPrenom(),
             ];
 
             $coockie = new Cookie('commande', json_encode($cookieValue), time() + ( 2 * 365 * 24 * 60 * 60));

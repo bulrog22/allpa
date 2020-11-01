@@ -43,7 +43,7 @@ security:
         - { path: ^/synthese/1, roles: ROLE_ADMIN }
         - { path: ^/synthese/2, roles: ROLE_ADMIN }
         - { path: ^/synthesepoids, roles: ROLE_ADMIN }
-        - { path: ^/register, roles: ROLE_ADMIN }
+        # - { path: ^/register, roles: ROLE_ADMIN }
         - { path: ^/settings, roles: ROLE_ADMIN }
         - { path: ^/user, roles: ROLE_ADMIN }
         - { path: ^/livree, roles: ROLE_ADMIN }

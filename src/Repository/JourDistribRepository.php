@@ -10,6 +10,8 @@ use App\Entity\Commande;
 use App\Entity\product;
 use App\Entity\LigneCommande;
 
+use App\Entity\User;
+
 /**
  * @method JourDistrib|null find($id, $lockMode = null, $lockVersion = null)
  * @method JourDistrib|null findOneBy(array $criteria, array $orderBy = null)
@@ -44,19 +46,36 @@ class JourDistribRepository extends ServiceEntityRepository
         return $this->findBy(array(), array('date' => $order));
     }
 
+    public function findAllUser(User $user)
+    {
+        
+        return $this->createQueryBuilder('j')
+            ->join('j.commandes','c')
+            ->join('c.user','u')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user)
+            ->orderBy('j.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     public function findAllActive()
     {
-        $entityManager = $this->getEntityManager();
-        
         $now = date('Y-m-d');
-        
-        
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.date >= :dateNow')
+            ->setParameter('dateNow', $now)
+            ->orderBy('j.date', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findAllActiveByCommand()
+    {               
         return $this->createQueryBuilder('j')
             ->join('j.commandes','c')
             ->andWhere('c.confirmed = true')
             ->andWhere('c.livree = false')
-            ->andWhere('j.date >= :dateNow')
-            ->setParameter('dateNow', $now)
             ->orderBy('j.date', 'ASC')
             ->getQuery()
             ->getResult()

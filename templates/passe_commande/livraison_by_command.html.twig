@@ -12,7 +12,6 @@
 {% block body %}
 <div class="col-md-12">
 {% for jour_distrib in jour_distribs %}
-    {% if jour_distrib.date|date('Y-m-d') >= "now"|date('Y-m-d') %}
     <div class="card">
         <div class="card-header border-transparent">
             <h3 class="card-title">{{ jour_distrib.date|format_datetime('full', 'none', locale='fr') }}</h3>
@@ -40,7 +39,7 @@
                     {% if jour_distrib.commandes is defined %}
                         {% for commande in jour_distrib.commandes %}
 
-                            {% if commande.livree == null%}
+                            {% if commande.livree == false %}
                                 {% set totalInit = 0 %}
                                 {% set totalFinal = 0 %}
                                 {% set sommeInit = 0 %}
@@ -53,7 +52,7 @@
                                 <tr class="table-danger">
                                 {% endif %}
                                     <td>{{ commande.id }}</td>
-                                    <td>{{ commande.prenom }} {{ commande.nom }}</br><i><small>{{ commande.commentaire }}</small></small></td>
+                                    <td>{{ commande.user.prenom }} {{ commande.user.nom }}</br><i><small>{{ commande.commentaire }}</small></small></td>
                                     <td>
                                     {% for ligne_commande in commande.ligneCommandes %}
                                         {% set sommeInit = ligne_commande.quantite*ligne_commande.product.prixInit %}
@@ -78,7 +77,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
 {% else %}
     <div class="callout callout-danger">
         <h5>Ya pas de commande !</h5>

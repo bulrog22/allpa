@@ -19,16 +19,6 @@ class Commande
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nom;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $prenom;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\LigneCommande", mappedBy="commande", cascade={"persist", "remove"})
      */
     private $ligneCommandes;
@@ -58,6 +48,12 @@ class Commande
      */
     private $date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="commandes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->ligneCommandes = new ArrayCollection();
@@ -66,30 +62,6 @@ class Commande
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
     }
 
     /**
@@ -179,6 +151,18 @@ class Commande
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

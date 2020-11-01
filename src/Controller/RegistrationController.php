@@ -29,7 +29,7 @@ class RegistrationController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-           return $this->redirectToRoute('user_index');
+           return $this->redirectToRoute('passe_commande_index');
         }
 
         return $this->render('registration/register.html.twig', [

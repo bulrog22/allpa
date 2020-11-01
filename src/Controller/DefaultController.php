@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-use Symfony\Component\HttpFoundation\Cookie;
-
 class DefaultController extends AbstractController
 {
     private $session;
@@ -35,8 +33,6 @@ class DefaultController extends AbstractController
         $jourDistribs = $jourDistribRepository->findAllActive();
 
         return $this->render('passe_commande/index.html.twig', [
-            'lastNom' => $this->session->get('commande_nom'),
-            'lastPrenom' => $this->session->get('commande_prenom'),
             'jour_distribs' => $jourDistribs,
             'poid_restant' => $jourDistribRepository->findConditionnement(),
         ]);
@@ -49,7 +45,9 @@ class DefaultController extends AbstractController
     {
         switch ($suivi) {
             case 0:
-                $jourDistribs = $jourDistribRepository->findAllActive();
+                $jourDistribs = $jourDistribRepository->findAllUser($this->getUser());
+                // dump ($jourDistribs);
+                // die;
                 break;
             case 1:
                 $order = 'DESC';
@@ -74,13 +72,12 @@ class DefaultController extends AbstractController
      */
     public function livraison(JourDistribRepository $jourDistribRepository, string $type): Response
     {
-        $jourDistribs = $jourDistribRepository->findAllActive();
+        $jourDistribs = $jourDistribRepository->findAllActiveByCommand();
         
         if ($type == 'product')
         {
             $jourDistribsTable = [];
             foreach ($jourDistribs as $jourDistrib ) {
-                dump($jourDistrib->getId());
                 $products = $jourDistrib->getProducts();
                 $productTable = [];
                 $i=0;
@@ -173,23 +170,11 @@ class DefaultController extends AbstractController
         $jourDistrib = $jourDistribRepository->findOneById($idJourDistrib);
         $products = $jourDistrib->getProducts();
         if ( $jourDistrib->getClosed() === false ) {
-
-            $request = Request::createFromGlobals();
-            $cookie = $request->cookies->get('commande');
-            $nom = "";
-            $prenom = "";
-            if (isset($cookie)) {
-                $contentCookie = json_decode($cookie);
-                $nom = $contentCookie->nom;
-                $prenom = $contentCookie->prenom;
-            }
     
             $form = $this->createForm(CommandeType::class, $commande, [
                 'products' => $products, 
                 'idJourDistrib' => $idJourDistrib, 
                 'jourDistrib' => $jourDistrib,
-                'lastNom' => $nom,
-                'lastPrenom' => $prenom,
                 ]);
             $form->handleRequest($request);
             
@@ -211,19 +196,12 @@ class DefaultController extends AbstractController
     
                     $entityManager = $this->getDoctrine()->getManager();
                     $commande->setDate(new \DateTime(date("Y-m-d H:i:s")));
+                    $commande->setUser($this->getUser());
                     $entityManager->persist($commande);
                     $entityManager->flush();
     
-                    $cookieValue = [
-                        'command_id' => $commande->getId(),
-                        'nom' => $commande->getNom(),
-                        'prenom' => $commande->getPrenom(),
-                    ];
-    
-                    $coockie = new Cookie('commande', json_encode($cookieValue), time() + ( 2 * 365 * 24 * 60 * 60));
-                    $response = $this->redirectToRoute('commande_index');
-                    $response->headers->setCookie($coockie);
-    
+                    $response = $this->redirectToRoute('commande_index');+
+
                     $this->addFlash(
                         'success',
                         'La commande a été enregistrée'

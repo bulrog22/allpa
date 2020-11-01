@@ -43,16 +43,6 @@ class CommandeType extends AbstractType
                 'attr' => ['class' => 'd-none'],
                 'label' => false,
             ])
-            ->add('nom', TextType::class, [
-                'label' => 'Nom : ',
-                'required' => true,
-                'data' => $options['lastNom']
-                ])
-            ->add('prenom', TextType::class, [
-                'label' => 'Prénom : ',
-                'required' => true,            
-                'data' => $options['lastPrenom']
-            ])
             ->add('ligneCommandes', CollectionType::class, [
                 'entry_type'   => LigneCommandeType::class,
                 'entry_options' => ['label' => false, 'products' => $options['products']],

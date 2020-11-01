@@ -30,7 +30,8 @@ welcome_text: "Message d'accueil"
 name: "Nom de l’application"
 contact_email: "Email de contact"
 favicon: "Favicon du site"
-
+ROLE_USER: Utilisateur
+ROLE_ADMIN: Administrateur
 menu:
   admin:
     title: Administration
@@ -47,6 +48,6 @@ menu:
       user: Utilisateurs
     
   my_last_command: Ma dernière commande
-  synthesis: Synthèse des commandes
+  synthesis: Toutes mes commandes
   order: Passer commande
   connexion: Connexion
