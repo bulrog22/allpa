@@ -14,7 +14,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  fields={"mail"},
  *  message="L'email renseigné est déjà utilisé."
  * )
+ * @UniqueEntity(
+ *  fields={"username"},
+ *  message="Le login renseigné est déjà utilisé."
+ * )
  */
+ 
 class User implements UserInterface
 {
     /**
