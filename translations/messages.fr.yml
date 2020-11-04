@@ -25,11 +25,12 @@ warning: Attention !!!
 success: C'est enregistré !
 
 color: Couleur
-logo: "Logo de l’application"
-welcome_text: "Message d'accueil"
-name: "Nom de l’application"
-contact_email: "Email de contact"
-favicon: "Favicon du site"
+logo: Logo de l’application
+welcome_text: Message d'accueil
+name: Nom de l’application
+contact_email: Email de contact
+favicon: Favicon du site
+text_confirm_email: Message du mail de confirmation
 ROLE_USER: Utilisateur
 ROLE_ADMIN: Administrateur
 menu:

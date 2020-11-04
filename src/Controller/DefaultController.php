@@ -6,6 +6,7 @@ use App\Entity\Commande;
 use App\Form\CommandeType;
 use App\Entity\JourDistrib;
 use App\Entity\LigneCommande;
+use App\Entity\Settings;
 
 use App\Repository\CommandeRepository;
 use App\Repository\JourDistribRepository;
@@ -16,6 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class DefaultController extends AbstractController
 {
@@ -150,13 +154,44 @@ class DefaultController extends AbstractController
     /**
      * @Route("/confirme/{commande}", name="livree_confirme", methods={"GET"})
      */
-    public function confirmeCommande(CommandeRepository $commandeRepository, Commande $commande ): Response
+    public function confirmeCommande(CommandeRepository $commandeRepository, Commande $commande, MailerInterface $mailer): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $commande->setConfirmed(true);
         
         $entityManager->persist($commande);
         $entityManager->flush();
+        $messageEmail = $entityManager->getRepository(Settings::class)->findOneByName('text_confirm_email')->getValue();
+        $messageEmail .= '</br></br><table style="border-collapse: collapse; border: 1px solid black">';
+        $ligneCommandes = $commande->getLigneCommandes();
+        $messageEmail .= '<tr>';
+        $messageEmail .= '<th style="border: 1px solid black">Produit</th>';
+        $messageEmail .= '<th style="border: 1px solid black">Conditionnement</th>';
+        $messageEmail .= '<th style="border: 1px solid black">Prix unitaire initial</th>';
+        $messageEmail .= '<th style="border: 1px solid black">Quantité</th>';
+        $messageEmail .= '</tr>';
+        foreach ($ligneCommandes as $ligneCommande) {
+            $messageEmail .= '<tr>';
+            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getNom() . '</td>';
+            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getConditionnement() . '</td>';
+            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getPrixInit() . ' €' . '</td>';
+            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getQuantite() . '</td>';
+            $messageEmail .= '</tr>';
+        }
+        $messageEmail .= '</table>';
+
+        $email = (new Email())
+            ->from('zestonsgrp@chuletas.fr')
+            ->to($this->getUser()->getMail())
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Commande Confirmée')
+            // ->text($messageEmail)
+            ->html($messageEmail);
+
+        $mailer->send($email);
 
         return $this->redirectToRoute('synthese_index',['suivi' => 2]);
     }

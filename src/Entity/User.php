@@ -26,8 +26,12 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Vous devez renseigner un nom d'utilisateur.")
-     * @Assert\Length(min=4, minMessage="Votre nom d'utilisateur doit faire au moins {{ limit }} caractères.")
+     * @Assert\Regex(
+     *     pattern     = "/^[a-z]+$/i",
+     *     htmlPattern = "^[a-z]+$",
+     *     message     = "Vous devez renseigner un login en minuscule sans espace et sans caractères spéciaux."
+     * )
+     * @Assert\Length(min=6, minMessage="Votre nom d'utilisateur doit faire au moins {{ limit }} caractères.")
      */
     private $username;
 
