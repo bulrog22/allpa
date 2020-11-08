@@ -116,7 +116,7 @@ class CommandeController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$commande->getId(), $request->request->get('_token'))) {
             $poidCommande = 0;
             foreach ($commande->getLigneCommandes() as $ligneCommande ){
-                $poidCommande += $ligneCommande->getPain()->getPoid() * $ligneCommande->getQuantite();
+                $poidCommande += $ligneCommande->getProduct()->getConditionnement() * $ligneCommande->getQuantite();
             }
             
             $poidRestant = $commande->getJourDistrib()->getPoidRestant();

@@ -39,9 +39,9 @@ menu:
     add_product: Ajouter un produit
     add_day: Jour de commande
     delivery: Suivi de livraison
-    delivery_by_product: Par produits
-    delivery_by_command: Par commandes
-    all_command: Toute les commandes
+    delivery_by_product: Par produit
+    delivery_by_command: Par commande
+    all_command: Toutes les commandes
     synthesis: Synthèse
     parameter:
       title: Paramètres

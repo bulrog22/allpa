@@ -58,7 +58,7 @@ class JourDistribType extends AbstractType
                 // 'model_timezone' => 'Europe/Paris',
             ])
             ->add('total', NumberType::class,[
-                'label' => 'Poid total de la commande (en kg)'
+                'label' => 'Poids total de la commande (en kg) (0 pas de limite)'
             ])
             ;
     }
