@@ -239,7 +239,7 @@ class DefaultController extends AbstractController
 
                     $this->addFlash(
                         'success',
-                        'La commande a été enregistrée'
+                        'Attention ! Votre commande ne sera validée définitivement qu\'à réception du règlement (chèque) à déposer ou à envoyer à l\'adresse suivante : <center></br>Zestons grouP </br>11 rue Tristan Corbières </br>22 000 SAINT-BRIEUC</center>'
                     );            
                         
                     return $response;
