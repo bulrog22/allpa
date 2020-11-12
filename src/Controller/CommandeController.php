@@ -22,22 +22,11 @@ class CommandeController extends AbstractController
      */
     public function index(CommandeRepository $commandeRepository): Response
     {
-        $request = Request::createFromGlobals();
-        $cookie = $request->cookies->get('commande');
-        
-        if (isset($cookie)) {
-            $contentCookie = json_decode($cookie);
-
-            $commandeId = $contentCookie->command_id;
-            $nom = $contentCookie->nom;
-            $prenom = $contentCookie->prenom;
-
-        }
-     
-        if (isset($commandeId)){
+        $commande = $commandeRepository->findOneBy([],['id' => 'desc']);     
+        if (isset($commande)){
 
             $response = $this->render('commande/index.html.twig', [
-                'commande' => $commandeRepository->findOneById($commandeId),
+                'commande' => $commande,
                 ]);
             return $response;
         }
