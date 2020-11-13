@@ -20,10 +20,9 @@
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th>Username</th>
+                            <th>Email</th>
                             <th>Nom</th>
                             <th>Prenom</th>
-                            <th>Email</th>
                             <th>Téléphone</th>
                             <th>Role</th>
                         </tr>
@@ -32,10 +31,9 @@
                     {% for user in users %}
                         <tr onclick="document.location = '{{ path('user_show', {'id': user.id}) }}';">
                             <td>{{ user.id }}</td>
-                            <td>{{ user.username }}</td>
+                            <td>{{ user.mail }}</td>
                             <td>{{ user.nom }}</td>
                             <td>{{ user.prenom }}</td>
-                            <td>{{ user.mail }}</td>
                             <td>{{ user.phone }}</td>
                             <td>
                                 {% for role in user.roles %} {{ role|trans }}</br> {% endfor %}

@@ -24,12 +24,13 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setUsername($user->getMail());
             $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
 
             $em->persist($user);
             $em->flush();
 
-           return $this->redirectToRoute('passe_commande_index');
+           return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [
