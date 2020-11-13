@@ -199,7 +199,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/new/{idJourDistrib}", name="passe_commande_new", methods={"GET","POST"})
      */
-    public function new(Request $request, int $idJourDistrib, JourDistribRepository $jourDistribRepository): Response
+    public function new(Request $request, int $idJourDistrib, JourDistribRepository $jourDistribRepository, MailerInterface $mailer): Response
     {
         $commande = new Commande();
         $jourDistrib = $jourDistribRepository->findOneById($idJourDistrib);
@@ -228,20 +228,49 @@ class DefaultController extends AbstractController
                 if ($poidRestant <= $form->getData()->getJourDistrib()->getTotal() or $jourDistrib->getTotal() == 0) {
                     
                     $form->getData()->getJourDistrib()->setPoidRestant($poidRestant);
-    
+                    
                     $entityManager = $this->getDoctrine()->getManager();
                     $commande->setDate(new \DateTime(date("Y-m-d H:i:s")));
                     $commande->setUser($this->getUser());
                     $entityManager->persist($commande);
                     $entityManager->flush();
     
-                    $response = $this->redirectToRoute('commande_index');+
+                    $response = $this->redirectToRoute('commande_index');
+
+                    $textRegisterCommand = $entityManager->getRepository(Settings::class)->findOneByName('text_register_command')->getValue();
 
                     $this->addFlash(
                         'success',
-                        'Attention ! Votre commande ne sera validée définitivement qu\'à réception du règlement (chèque) à déposer ou à envoyer à l\'adresse suivante : <center></br>Zestons grouP </br>11 rue Tristan Corbière </br>22 000 SAINT-BRIEUC</center>'
+                        'Attention ! ' . $textRegisterCommand
                     );            
                         
+                    $messageEmail = $entityManager->getRepository(Settings::class)->findOneByName('text_register_command')->getValue();
+                    $messageEmail .= '</br></br><table style="border-collapse: collapse; border: 1px solid black">';
+                    $ligneCommandes = $commande->getLigneCommandes();
+                    $messageEmail .= '<tr>';
+                    $messageEmail .= '<th style="border: 1px solid black">Produit</th>';
+                    $messageEmail .= '<th style="border: 1px solid black">Conditionnement</th>';
+                    $messageEmail .= '<th style="border: 1px solid black">Prix unitaire initial</th>';
+                    $messageEmail .= '<th style="border: 1px solid black">Quantité</th>';
+                    $messageEmail .= '</tr>';
+                    foreach ($ligneCommandes as $ligneCommande) {
+                        $messageEmail .= '<tr>';
+                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getNom() . '</td>';
+                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getConditionnement() . '</td>';
+                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getPrixInit() . ' €' . '</td>';
+                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getQuantite() . '</td>';
+                        $messageEmail .= '</tr>';
+                    }
+                    $messageEmail .= '</table>';
+
+                    $email = (new Email())
+                        ->from('zestonsgrp@chuletas.fr')
+                        ->to($this->getUser()->getMail())
+                        ->subject('Commande Enregistrée')
+                        ->html($messageEmail);
+
+                    $mailer->send($email);
+
                     return $response;
                 }
                 else {
