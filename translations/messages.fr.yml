@@ -31,6 +31,7 @@ name: Nom de l’application
 contact_email: Email de contact
 favicon: Favicon du site
 text_confirm_email: Message du mail de confirmation
+text_register_command: Message d'enregistrement de la commande
 ROLE_USER: Utilisateur
 ROLE_ADMIN: Administrateur
 menu:
