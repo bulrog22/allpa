@@ -10,7 +10,7 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">{{ commande.user.prenom }} {{ commande.user.nom }}</br>
-                {{ commande.jourDistrib.date|format_datetime('full', 'none', locale='fr') }}</h5>
+                Commande du {{ commande.jourDistrib.date|format_datetime('full', 'none', locale='fr') }} {{ commande.jourDistrib.dateLivraison ? '</br> Livraison le ' : '' }} {{ commande.jourDistrib.dateLivraison ? commande.jourDistrib.dateLivraison|format_datetime('full', 'none', locale='fr') : '' }}</h3>
                 <div class="card-tools">
                     {{ include('commande/_delete_form.html.twig') }}
                 </div>

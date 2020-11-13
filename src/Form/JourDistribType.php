@@ -50,8 +50,17 @@ class JourDistribType extends AbstractType
         }
         $builder
             ->add('date', DateType::class, [
-                'label' => 'Date de Disribution ',
+                'label' => 'Date limite de commande',
                 'widget' => 'single_text',
+                // 'attr' => ['class' => 'ui-datepicker'],
+                // 'format' => 'dd/MM/yyyy',
+                // 'html5' => false,
+                // 'model_timezone' => 'Europe/Paris',
+            ])
+            ->add('datelivraison', DateType::class, [
+                'label' => 'Date de livraison',
+                'widget' => 'single_text',
+                'required' => false,
                 // 'attr' => ['class' => 'ui-datepicker'],
                 // 'format' => 'dd/MM/yyyy',
                 // 'html5' => false,

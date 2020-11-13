@@ -48,6 +48,11 @@ class JourDistrib
      */
     private $products;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateLivraison;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -180,6 +185,18 @@ class JourDistrib
             $this->products->removeElement($product);
             $product->removeJourDistrib($this);
         }
+
+        return $this;
+    }
+
+    public function getDateLivraison(): ?\DateTimeInterface
+    {
+        return $this->dateLivraison;
+    }
+
+    public function setDateLivraison(?\DateTimeInterface $dateLivraison): self
+    {
+        $this->dateLivraison = $dateLivraison;
 
         return $this;
     }

@@ -36,7 +36,8 @@
         <div class="card">
     {% endif %}
         <div class="card-header border-transparent">
-            <h3 class="card-title">{{ jour_distrib.date|format_datetime('full', 'none', locale='fr') }}</h3>
+            <h3 class="card-title">Commande du {{ jour_distrib.date|format_datetime('full', 'none', locale='fr') }} 
+            {{ jour_distrib.dateLivraison ? ' </br>Livraison le ' : '' }} {{ jour_distrib.dateLivraison ? jour_distrib.dateLivraison|format_datetime('full', 'none', locale='fr') : '' }}</h3>
             <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                 <i class="fas fa-minus"></i>
