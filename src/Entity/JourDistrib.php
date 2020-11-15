@@ -53,6 +53,11 @@ class JourDistrib
      */
     private $dateLivraison;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $limite;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -197,6 +202,18 @@ class JourDistrib
     public function setDateLivraison(?\DateTimeInterface $dateLivraison): self
     {
         $this->dateLivraison = $dateLivraison;
+
+        return $this;
+    }
+
+    public function getLimite(): ?bool
+    {
+        return $this->limite;
+    }
+
+    public function setLimite(bool $limite): self
+    {
+        $this->limite = $limite;
 
         return $this;
     }

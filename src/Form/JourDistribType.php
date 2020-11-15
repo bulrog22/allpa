@@ -72,6 +72,10 @@ class JourDistribType extends AbstractType
             ->add('total', NumberType::class,[
                 'label' => 'jour_distrib.form.poid_commande'
             ])
+            ->add('limite', CheckboxType::class,[
+                'label' => 'jour_distrib.form.limite',
+                'required' => false,
+            ])
             ;
     }
 

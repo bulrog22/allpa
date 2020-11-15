@@ -37,9 +37,26 @@ class DefaultController extends AbstractController
     public function index(JourDistribRepository $jourDistribRepository): Response
     {
         $jourDistribs = $jourDistribRepository->findAllActive();
+        $tableJours = [];
+
+        foreach ($jourDistribs as $jourDistrib) 
+        {
+            $testUser = false;
+            if ($jourDistrib->getLimite() == true)
+            {
+                foreach ($jourDistrib->getCommandes() as $commande)
+                {
+                    if ($commande->getUser() == $this->getUser())
+                    {
+                        $testUser = true;
+                    }
+                }
+            }
+            array_push ($tableJours, ['jour' => $jourDistrib, 'test_user_commande' => $testUser]);
+        }
         
         return $this->render('passe_commande/index.html.twig', [
-            'jour_distribs' => $jourDistribs,
+            'jour_distribs' => $tableJours,
             'poid_restant' => $jourDistribRepository->findConditionnement(),
         ]);
     }
@@ -174,7 +191,7 @@ class DefaultController extends AbstractController
         foreach ($ligneCommandes as $ligneCommande) {
             $messageEmail .= '<tr>';
             $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getNom() . '</td>';
-            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getConditionnement() . '</td>';
+            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getConditionnement() . $ligneCommande->getProduct()->getUnit() . '</td>';
             $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getPrixInit() . ' €' . '</td>';
             $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getQuantite() . '</td>';
             $messageEmail .= '</tr>';
@@ -257,7 +274,7 @@ class DefaultController extends AbstractController
                     foreach ($ligneCommandes as $ligneCommande) {
                         $messageEmail .= '<tr>';
                         $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getNom() . '</td>';
-                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getConditionnement() . '</td>';
+                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getConditionnement() . $ligneCommande->getProduct()->getUnit() .'</td>';
                         $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getPrixInit() . ' €' . '</td>';
                         $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getQuantite() . '</td>';
                         $messageEmail .= '</tr>';

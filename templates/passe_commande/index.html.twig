@@ -26,24 +26,31 @@
                         <tr>
                             <th>Date limite de commande</th>
                             <th>Date de livraison</th>
-                            <th>Poids restant</th>
+                            <th>Etat</th>
                         </tr>
                     </thead>
                     <tbody>
                     {% for jour_distrib in jour_distribs %}
-                        {% if jour_distrib.dateLivraison|date('Y-m-d') >= "now"|date('Y-m-d') %}
-                            {% if (jour_distrib.poidRestant < jour_distrib.total or jour_distrib.total == 0) and jour_distrib.date|date('Y-m-d') > "now"|date('Y-m-d') and jour_distrib.closed == false %}
-                                <tr onclick="document.location = '{{ path('passe_commande_new', {'idJourDistrib': jour_distrib.id}) }}';">
-                                    <td>{{ jour_distrib.date|format_datetime('full', 'none', locale='fr') }}</td>
-                                    <td>{{ jour_distrib.dateLivraison ? jour_distrib.dateLivraison|format_datetime('full', 'none', locale='fr') : 'Non renseignée' }}</td>
-                                    {% if jour_distrib.total != 0 %}<td>{{ (jour_distrib.total - jour_distrib.poidRestant)|round(1, 'ceil')|default(0)}} kg</td>{% else %} <td>Pas de limite</td>{% endif %}
+                        {% if jour_distrib.jour.dateLivraison|date('Y-m-d') >= "now"|date('Y-m-d') %}
+                            {% if (jour_distrib.jour.poidRestant < jour_distrib.jour.total or jour_distrib.jour.total == 0) and jour_distrib.jour.date|date('Y-m-d') > "now"|date('Y-m-d') and jour_distrib.jour.closed == false and jour_distrib.test_user_commande == false %}
+                                <tr onclick="document.location = '{{ path('passe_commande_new', {'idJourDistrib': jour_distrib.jour.id}) }}';">
+                                    <td>{{ jour_distrib.jour.date|format_datetime('full', 'none', locale='fr') }}</td>
+                                    <td>{{ jour_distrib.jour.dateLivraison ? jour_distrib.jour.dateLivraison|format_datetime('full', 'none', locale='fr') : 'Non renseignée' }}</td>
+                                    {% if jour_distrib.jour.total != 0 %}
+                                        <td>Poids restant : {{ (jour_distrib.jour.total - jour_distrib.jour.poidRestant)|round(1, 'ceil')|default(0)}} kg</td>
+                                    {% elseif jour_distrib.jour.limite %} 
+                                        <td>Une Commande possible</td>
+                                    {% else %} 
+                                        <td>Pas de limite</td>{% endif %}
                                 </tr>
                             {% else %}
                                 <tr class="table-warning">
-                                    <td>{{ jour_distrib.date|format_datetime('full', 'none', locale='fr') }}</td>
-                                    <td>{{ jour_distrib.dateLivraison ? jour_distrib.dateLivraison|format_datetime('full', 'none', locale='fr') : 'Non renseignée' }}</td>
-                                    {% if jour_distrib.closed == true %}
+                                    <td>{{ jour_distrib.jour.date|format_datetime('full', 'none', locale='fr') }}</td>
+                                    <td>{{ jour_distrib.jour.dateLivraison ? jour_distrib.jour.dateLivraison|format_datetime('full', 'none', locale='fr') : 'Non renseignée' }}</td>
+                                    {% if jour_distrib.jour.closed == true %}
                                         <td>FERMÉ</td>
+                                    {% elseif jour_distrib.test_user_commande %}
+                                        <td>Commande déjà passée</td>
                                     {% else %}
                                         <td>COMPLET</td>
                                     {% endif %}

@@ -39,7 +39,7 @@
                     {% if jour_distrib.commandes is defined %}
                         {% for commande in jour_distrib.commandes %}
 
-                            {% if commande.livree == false %}
+                            {% if commande.livree == false and commande.confirmed == true %}
                                 {% set totalInit = 0 %}
                                 {% set totalFinal = 0 %}
                                 {% set sommeInit = 0 %}
