@@ -34,7 +34,7 @@
                         <tr onclick="document.location = '{{ path('product_edit', {'id': product.id}) }}';">
                             <td>{{ product.id }}</td>
                             <td>{{ product.nom }}</td>
-                            <td>{{ product.conditionnement|number_format(2, ',', '.') }} kg</td>
+                            <td>{{ product.conditionnement|number_format(2, ',', '.') }} {{ product.unit }}</td>
                             <td>{{ product.prixInit|number_format(2, ',', '.') }} €</td>
                             <td>{{ product.prixFinal|number_format(2, ',', '.') }} €</td>
                         </tr>

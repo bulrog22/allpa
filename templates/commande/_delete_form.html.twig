@@ -1,5 +1,5 @@
 <form method="post" action="{{ path('commande_delete', {'id': commande.id}) }}">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ commande.id) }}">
-    <button class="btn" onclick="return confirm('Voulez-vous vraiment supprimer cette commande ?')"><i class="fas fa-trash-alt"></i></button>
+    <button class="btn" onclick="return confirm({{ 'alert_message.confirm_delete_command'|trans}})"><i class="fas fa-trash-alt"></i></button>
 </form>

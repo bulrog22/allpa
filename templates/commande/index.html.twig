@@ -35,7 +35,7 @@
                         {% set totalInit = totalInit+sommeInit %}
                         {% set totalFinal = totalFinal+sommeFinal %}
                         <tr>
-                            <td>{{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}kg</td>
+                            <td>{{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}{{ ligne_commande.product.unit }}</td>
                             <td>{{ ligne_commande.quantite }}</td>
                             <td>{{ sommeInit }} €</td>
                             <td>{{ sommeFinal }} €</td>

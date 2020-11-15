@@ -32,18 +32,18 @@ class SettingsType extends AbstractType
             if (!$settings || 1 === $settings->getId()) {
                 $form->add('value', ChoiceType::class, [
                     'choices'  => [
-                        'Bleu' => 'blue',
-                        'Cyan' => 'cyan',
-                        'Gris' => 'gray',
-                        'Gris Foncé' => 'gray-dark',
-                        'Indigo' => 'indigo',
-                        'Jaune' => 'yellow',
-                        'Orange' => 'orange',
-                        'Rose' => 'pink',
-                        'Rouge' => 'red',
-                        'Turquoise' => 'teal',
-                        'Vert' => 'green',
-                        'Violet' => 'purple',
+                        'settings.form.blue' => 'blue',
+                        'settings.form.cyan' => 'cyan',
+                        'settings.form.gray' => 'gray',
+                        'settings.form.gray-dark' => 'gray-dark',
+                        'settings.form.indigo' => 'indigo',
+                        'settings.form.yellow' => 'yellow',
+                        'settings.form.orange' => 'orange',
+                        'settings.form.pink' => 'pink',
+                        'settings.form.red' => 'red',
+                        'settings.form.teal' => 'teal',
+                        'settings.form.green' => 'green',
+                        'settings.form.purple' => 'purple',
                     ],
                     'multiple'=>false,
                     'expanded'=>true,
@@ -63,15 +63,15 @@ class SettingsType extends AbstractType
                             'mimeTypes' => [
                                 'image/png',
                             ],
-                            'mimeTypesMessage' => 'Télécharger un fichier PNG valide',
+                            'mimeTypesMessage' => 'settings.form.valid_image',
                         ])
                     ],
-                    'label' => 'Coisir un Fichier',
+                    'label' => 'settings.form.choice_file',
                 ]);
             }
             elseif (!$settings || 5 === $settings->getId()){
                 $form->add('value', EmailType::class, [
-                    'help' => 'Entrez une adresse Email',
+                    'help' => 'settings.form.valid_mail',
                     'mapped' => false,
                     'required' => false,
             ]);

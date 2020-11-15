@@ -48,8 +48,76 @@ menu:
       title: Paramètres
       config: Configuration
       user: Utilisateurs
-    
   my_last_command: Ma dernière commande
   synthesis: Toutes mes commandes
   order: Passer commande
   connexion: Connexion
+jour_distrib:
+  form:
+    date_limite: Date limite de commande
+    date_livraison: Date de livraison
+    poid_commande: Poids total de la commande (en kg) (0 pas de limite)
+    closed: Fermer la vente
+    products: Produits
+ligne_commande:
+  form:
+    quantite: Quantité
+product:
+  form:
+    nom: Nom
+    conditionnement: Conditionnement
+    prixInit: Prix Initial
+    prixFinal: prix Final
+    unit: Unité
+registration:
+  form:
+    nom: Nom
+    prenom: Prénom
+    password: Mot de passe
+    confirmPassword: Confirmation du mot de passe
+    mail: E-mail
+    phone: Numéro de téléphone
+    agreeTerms: Accord avec les termes d'usage de Zeston GrouP
+settings:
+  form:
+    blue: Bleu
+    cyan: Cyan
+    gray: Gris
+    gray-dark: Gris Foncé
+    indigo: Indigo
+    yellow: Jaune
+    orange: Orange
+    pink: Rose
+    red: Rouge
+    teal: Turquoise
+    green: Vert
+    purple: Violet
+    choice_file: Coisir un Fichier
+    valid_mail: Entrez une adresse Email
+    valid_image: Télécharger un fichier PNG valide
+user:
+  form:
+    nom: Nom
+    prenom: Prénom
+    roles: 
+      name: Authorisation
+      admin: Administrateur
+      user: Utilisateur
+    mail: E-mail
+    phone: Téléphone
+  twig:
+email:
+  subject:
+    confirm_command: Commande Confirmée
+    register_command: Commande Enregistrée
+
+alert_message:
+  limit_weight: La limite de poid disponible a été dépassée !
+  closed_commande: La commande est fermée !
+  delete_user: Utilisateur supprimé !
+  protected_user: Utilisateur protégé !
+  connected_user: Impossible de supprimer l'utilisateur connecté !
+  unknown_user: Utilisateur inconnu !
+  confirm_delete_command: Voulez-vous vraiment supprimer cette commande ?
+button:
+  register: Enregistrer

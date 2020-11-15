@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Translation\Translator; 
 
 class JourDistribType extends AbstractType
 {
@@ -18,7 +19,7 @@ class JourDistribType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('closed', CheckboxType::class, [
-            'label'    => 'Fermer la vente',
+            'label' => 'jour_distrib.form.closed',
             'required' => false,
         ]);
         if ($options['edit']){
@@ -26,11 +27,12 @@ class JourDistribType extends AbstractType
                 ->add('products', EntityType::class, [
                     'class' => Product::class,
                     'choice_label' => function (Product $product = null) {
-                        return $product->getNom() . " - " . $product->getConditionnement() . "kg";
+                        return $product->getNom() . " - " . $product->getConditionnement() . $product->getUnit();
                     },
                     'choice_value' => 'id',
                     'multiple' => true,
                     'expanded' => true,
+                    'label' => 'jour_distrib.form.products',
                 ]);
         }
         else {
@@ -38,11 +40,12 @@ class JourDistribType extends AbstractType
                 ->add('products', EntityType::class, [
                     'class' => Product::class,
                     'choice_label' => function (Product $product = null) {
-                        return $product->getNom() . " - " . $product->getConditionnement() . "kg";
+                        return $product->getNom() . " - " . $product->getConditionnement() . $product->getUnit();
                     },
                     'choice_value' => 'id',
                     'multiple' => true,
                     'expanded' => true,
+                    'label' => 'jour_distrib.form.products',
                     'choice_attr' => function($val, $key, $index) {
                         return array('checked' => true);
                     },
@@ -50,7 +53,7 @@ class JourDistribType extends AbstractType
         }
         $builder
             ->add('date', DateType::class, [
-                'label' => 'Date limite de commande',
+                'label' => 'jour_distrib.form.date_limite',
                 'widget' => 'single_text',
                 // 'attr' => ['class' => 'ui-datepicker'],
                 // 'format' => 'dd/MM/yyyy',
@@ -58,7 +61,7 @@ class JourDistribType extends AbstractType
                 // 'model_timezone' => 'Europe/Paris',
             ])
             ->add('datelivraison', DateType::class, [
-                'label' => 'Date de livraison',
+                'label' => 'jour_distrib.form.date_livraison',
                 'widget' => 'single_text',
                 'required' => false,
                 // 'attr' => ['class' => 'ui-datepicker'],
@@ -67,7 +70,7 @@ class JourDistribType extends AbstractType
                 // 'model_timezone' => 'Europe/Paris',
             ])
             ->add('total', NumberType::class,[
-                'label' => 'Poids total de la commande (en kg) (0 pas de limite)'
+                'label' => 'jour_distrib.form.poid_commande'
             ])
             ;
     }

@@ -26,7 +26,7 @@
                     <tbody>
                     {% for ligne_commande in ligne_commandes %}
                         <tr onclick="document.location = '{{ path('ligne_commande_edit', {'id': ligne_commande.id}) }}';">
-                            <td>{{ ligne_commande.product.nom }} - {{ ligne_commande.product.poid }}kg</td>
+                            <td>{{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}{{ ligne_commande.product.unit }}</td>
                             <td>{{ ligne_commande.quantite }}</td>
 
                         </tr>

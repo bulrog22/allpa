@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -19,18 +21,27 @@ class UserAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
+            ->add('nom',TextType::class, [
+                'label' => 'user.form.nom', 
+                ])
+            ->add('prenom',TextType::class, [
+                'label' => 'user.form.prenom', 
+                ])
             ->add('roles', ChoiceType::class, [
+                'label' => 'user.form.roles.name', 
                 'choices' => [
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Utilisateur' => 'ROLE_USER',
+                    'user.form.roles.admin' => 'ROLE_ADMIN',
+                    'user.form.roles.user' => 'ROLE_USER',
                 ],
                 'expanded' => true,
                 'multiple' => true,
             ])
-            ->add('mail', EmailType::class)
-            ->add('phone')
+            ->add('mail', EmailType::class, [
+                'label' => 'user.form.mail', 
+            ])
+            ->add('phone',TextType::class, [
+                'label' => 'user.form.phone', 
+            ])
         ;
     }
 

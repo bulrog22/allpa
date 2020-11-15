@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 /**
  * @Route("/user")
  */
@@ -84,7 +86,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request, User $user, TranslatorInterface $translator): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
 
@@ -92,14 +94,14 @@ class UserController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($user);
                 $entityManager->flush();
-                $this->addFlash('success', 'Utilisateur supprimé !');
+                $this->addFlash('success', $translator->trans('alert_message.delete_user'));
             }
             else {
                 if ($user->getId() == 1){
-                    $this->addFlash('danger', 'Utilisateur protégé !');
+                    $this->addFlash('danger', $translator->trans('alert_message.protected_user'));
                 }
                 else {
-                    $this->addFlash('danger', 'Impossible de supprimer l\'utilisateur connecté !');
+                    $this->addFlash('danger', $translator->trans('alert_message.connected_user'));
                 }
             }
 

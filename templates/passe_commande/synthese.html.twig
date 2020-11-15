@@ -89,7 +89,7 @@
                                         {% set sommeFinal = ligne_commande.quantite*ligne_commande.product.prixFinal %}
                                         {% set totalInit = totalInit+sommeInit %}
                                         {% set totalFinal = totalFinal+sommeFinal %}
-                                        <p>{{ ligne_commande.quantite}} {{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}kg 
+                                        <p>{{ ligne_commande.quantite}} {{ ligne_commande.product.nom }} - {{ ligne_commande.product.conditionnement }}{{ ligne_commande.product.unit }} 
                                         {% if commande.confirmed %} {% if ligne_commande.livree %}<span class="badge bg-success">Livrée</span>{% else %}<span class="badge bg-danger">A prendre</span>{% endif %}{% endif %}</p>
                                         </p>
                                     {% endfor %}

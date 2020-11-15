@@ -54,7 +54,7 @@
                                             <td>{{ ligneCommande.commande.id }}</td>
                                             <td>{{ ligneCommande.commande.user.prenom }} {{ ligneCommande.commande.user.nom }}</br><i><small>{{ ligneCommande.commande.commentaire }}</small></small></td>
                                             <td>
-                                                <p>{{ ligneCommande.quantite}} {{ ligneCommande.product.nom }} - {{ ligneCommande.product.conditionnement }}kg </p>
+                                                <p>{{ ligneCommande.quantite}} {{ ligneCommande.product.nom }} - {{ ligneCommande.product.conditionnement }}{{ ligne_commande.product.unit }} </p>
                                             </td>
                                             <td>
                                                 <a href="{{ path('livree_ligne_commande', { ligneCommande: ligneCommande.id }) }}" onclick="return confirm('Tu lui as vraiment donné ?')"><i class="fas fa-check"></i></a>

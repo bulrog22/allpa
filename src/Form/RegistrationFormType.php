@@ -19,8 +19,12 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
+            ->add('nom',TextType::class, [
+                'label' => 'registration.form.nom', 
+            ])
+            ->add('prenom',TextType::class, [
+                'label' => 'registration.form.prenom', 
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -28,11 +32,20 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Cocher la case !',
                     ]),
                 ],
+                'label' => 'registration.form.agreeTerms', 
             ])
-            ->add('password', PasswordType::class)
-            ->add('confirmPassword', PasswordType::class)
-            ->add('mail', EmailType::class)
-            ->add('phone')
+            ->add('password', PasswordType::class, [
+                'label' => 'registration.form.password', 
+            ])
+            ->add('confirmPassword', PasswordType::class, [
+                'label' => 'registration.form.confirmPassword', 
+            ])
+            ->add('mail', EmailType::class, [
+                'label' => 'registration.form.mail', 
+            ])
+            ->add('phone', TextType::class, [
+                'label' => 'registration.form.phone', 
+            ])
         ;
     }
 

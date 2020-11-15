@@ -8,7 +8,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Modifier le Produit {{ product.nom }} {{ product.conditionnement }} kg</h3>
+                <h3 class="card-title">Modifier le Produit {{ product.nom }} {{ product.conditionnement }} {{ ligne_commande.product.unit }}</h3>
                 <div class="card-tools">
                         {{ include('product/_delete_form.html.twig') }}    
                 </div>            

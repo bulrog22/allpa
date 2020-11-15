@@ -22,14 +22,15 @@ class LigneCommandeType extends AbstractType
             ->add('product', EntityType::class, [
                 'class' => Product::class,
                 'choice_label' => function (Product $product = null) {
-                    return $product->getNom() . " - " . $product->getConditionnement() . " kg" . " - " . $product->getPrixInit() . " €";
+                    return $product->getNom() . " - " . $product->getConditionnement() . $product->getUnit() . " - " . $product->getPrixInit() . " €";
                 },
                 'choice_value' => 'id',
                 'choices' => $options['products'],
                 'label' => false,
                 'required' => true,
-            ])
+                ])
             ->add('quantite', IntegerType::class,[
+                'label' => 'ligne_commande.form.quantite',
                 'required' => true,
                 'attr' => array('min' => 1),
                 'data' => 1,

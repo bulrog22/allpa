@@ -22,7 +22,8 @@ class CommandeController extends AbstractController
      */
     public function index(CommandeRepository $commandeRepository): Response
     {
-        $commande = $commandeRepository->findOneBy([],['id' => 'desc']);     
+        $commande = $commandeRepository->findOneBy(['user' => $this->getUser()],['id' => 'desc']); 
+  
         if (isset($commande)){
 
             $response = $this->render('commande/index.html.twig', [
@@ -72,26 +73,6 @@ class CommandeController extends AbstractController
         }
 
         return $this->render('commande/new.html.twig', [
-            'commande' => $commande,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="commande_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Commande $commande): Response
-    {
-        $form = $this->createForm(CommandeType::class, $commande);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('commande_index');
-        }
-
-        return $this->render('commande/edit.html.twig', [
             'commande' => $commande,
             'form' => $form->createView(),
         ]);

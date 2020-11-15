@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 class DefaultController extends AbstractController
 {
     private $session;
@@ -35,7 +37,7 @@ class DefaultController extends AbstractController
     public function index(JourDistribRepository $jourDistribRepository): Response
     {
         $jourDistribs = $jourDistribRepository->findAllActive();
-
+        
         return $this->render('passe_commande/index.html.twig', [
             'jour_distribs' => $jourDistribs,
             'poid_restant' => $jourDistribRepository->findConditionnement(),
@@ -100,7 +102,6 @@ class DefaultController extends AbstractController
                 array_push($jourDistribsTable, ['date' => $jourDistrib->getDate(), 'produits' => $productTable]);
             }
 
-
             return $this->render('passe_commande/livraison_by_product.html.twig', [
                 'jour_distribs' => $jourDistribsTable,
             ]);
@@ -127,7 +128,7 @@ class DefaultController extends AbstractController
         $entityManager->persist($commande);
         $entityManager->flush();
 
-        return $this->redirectToRoute('synthese_index',['suivi' => 1]);
+        return $this->redirectToRoute('livraison',['type' => "command"]);
     }
 
     /**
@@ -154,7 +155,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/confirme/{commande}", name="livree_confirme", methods={"GET"})
      */
-    public function confirmeCommande(CommandeRepository $commandeRepository, Commande $commande, MailerInterface $mailer): Response
+    public function confirmeCommande(CommandeRepository $commandeRepository, Commande $commande, MailerInterface $mailer, TranslatorInterface $translator): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $commande->setConfirmed(true);
@@ -181,13 +182,13 @@ class DefaultController extends AbstractController
         $messageEmail .= '</table>';
 
         $email = (new Email())
-            ->from('zestonsgrp@chuletas.fr')
+            ->from($entityManager->getRepository(Settings::class)->findOneByName('contact_email')->getValue())
             ->to($this->getUser()->getMail())
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
-            ->subject('Commande Confirmée')
+            ->subject($translator->trans('email.subject.confirm_command'))
             // ->text($messageEmail)
             ->html($messageEmail);
 
@@ -199,7 +200,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/new/{idJourDistrib}", name="passe_commande_new", methods={"GET","POST"})
      */
-    public function new(Request $request, int $idJourDistrib, JourDistribRepository $jourDistribRepository, MailerInterface $mailer): Response
+    public function new(Request $request, int $idJourDistrib, JourDistribRepository $jourDistribRepository, MailerInterface $mailer, TranslatorInterface $translator): Response
     {
         $commande = new Commande();
         $jourDistrib = $jourDistribRepository->findOneById($idJourDistrib);
@@ -264,9 +265,9 @@ class DefaultController extends AbstractController
                     $messageEmail .= '</table>';
 
                     $email = (new Email())
-                        ->from('zestonsgrp@chuletas.fr')
+                        ->from($entityManager->getRepository(Settings::class)->findOneByName('contact_email')->getValue())
                         ->to($this->getUser()->getMail())
-                        ->subject('Commande Enregistrée')
+                        ->subject($translator->trans('email.subject.register_command'))
                         ->html($messageEmail);
 
                     $mailer->send($email);
@@ -276,24 +277,24 @@ class DefaultController extends AbstractController
                 else {
                     $this->addFlash(
                         'warning',
-                        'La limite de poid disponible a été dépassée !'
+                        $translator->trans('alert_message.limit_weight')
                     );
                     return $this->redirectToRoute('passe_commande_index');
                 }
                 
             }
-    
+            
             return $this->render('commande/new.html.twig', [
                 'commande' => $commande,
                 'form' => $form->createView(),
                 'products' => $products,
                 'idJourDistrib' => $jourDistrib,
-            ]);
+                ]);
         } 
         else {
             $this->addFlash(
                 'warning',
-                'La commande est fermée'
+                $translator->trans('alert_message.closed_commande')
             );
             return $this->redirectToRoute('passe_commande_index');
         }

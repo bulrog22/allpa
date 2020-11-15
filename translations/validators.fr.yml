@@ -1,0 +1,4 @@
+settings:
+  form:
+    valid_mail: Entrez une adresse Email
+    valid_image: Télécharger un fichier PNG valide

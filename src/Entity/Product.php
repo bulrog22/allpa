@@ -48,6 +48,11 @@ class Product
      */
     private $jourDistribs;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $unit;
+
     public function __construct()
     {
         $this->ligneCommandes = new ArrayCollection();
@@ -160,6 +165,18 @@ class Product
         if ($this->jourDistribs->contains($jourDistrib)) {
             $this->jourDistribs->removeElement($jourDistrib);
         }
+
+        return $this;
+    }
+
+    public function getUnit(): ?string
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(string $unit): self
+    {
+        $this->unit = $unit;
 
         return $this;
     }
