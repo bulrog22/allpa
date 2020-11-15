@@ -77,7 +77,7 @@ class LigneCommandeController extends AbstractController
 
 
             $poidLigneCommande = 0;
-            $poidLigneCommande += $ligneCommande->getPain()->getPoid() * $ligneCommande->getQuantite();
+            $poidLigneCommande += $ligneCommande->getProduct()->getConditionnement() * $ligneCommande->getQuantite();
             
             $poidRestant = $ligneCommande->getCommande()->getJourDistrib()->getPoidRestant();
             $poidRestant -= $poidLigneCommande;

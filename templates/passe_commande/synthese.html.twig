@@ -119,11 +119,13 @@
                                         <td>
                                             {% if commande.livree == false %}
                                                 {% if jour_distrib.date|date('Y-m-d') >= "now"|date('Y-m-d') %}
-                                                {{ include('commande/_delete_form.html.twig') }}
+                                                    {% if commande.confirmed == false and suivi == 0 %} {{ include('commande/_delete_form.html.twig') }} {% endif %}
+                                                    {% if suivi != 0 %} {{ include('commande/_delete_form.html.twig') }} {% endif %}
                                                 {% endif %}
                                             
-                                            {% if commande.confirmed == true %} 
-                                            <span class="badge bg-warning">Validée</span>{% endif %}
+                                                {% if commande.confirmed == true %} 
+                                                <span class="badge bg-warning">Validée</span>
+                                                {% endif %}
 
                                             {% else %}
                                             <span class="badge bg-success">Livrée</span>

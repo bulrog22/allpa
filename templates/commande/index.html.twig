@@ -11,9 +11,11 @@
             <div class="card-header">
                 <h5 class="card-title">{{ commande.user.prenom }} {{ commande.user.nom }}</br>
                 Commande du {{ commande.jourDistrib.date|format_datetime('full', 'none', locale='fr') }} {{ commande.jourDistrib.dateLivraison ? '</br> Livraison le ' : '' }} {{ commande.jourDistrib.dateLivraison ? commande.jourDistrib.dateLivraison|format_datetime('full', 'none', locale='fr') : '' }}</h3>
+                {% if commande.confirmed == null %}
                 <div class="card-tools">
                     {{ include('commande/_delete_form.html.twig') }}
                 </div>
+                {% endif %}
             </div>
             <div class="card-body table-responsive p-0">
                 <table class="table table-sm">
@@ -24,6 +26,7 @@
                             <th>Nb</th>
                             <th>Prix Initial</th>
                             <th>Prix Final</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +42,7 @@
                             <td>{{ ligne_commande.quantite }}</td>
                             <td>{{ sommeInit }} €</td>
                             <td>{{ sommeFinal }} €</td>
-                            <td>{{ include('ligne_commande/_delete_form.html.twig') }}</td>
+                            <td>{% if commande.confirmed == null %}{{ include('ligne_commande/_delete_form.html.twig') }}{% endif %}</td>
                         </tr>
                     {% endfor %}
                         <tr>
