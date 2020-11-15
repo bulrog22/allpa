@@ -59,6 +59,7 @@ jour_distrib:
     poid_commande: Poids total de la commande (en kg) (0 pas de limite)
     closed: Fermer la vente
     products: Produits
+    limite: Limité a une commande par personne
 ligne_commande:
   form:
     quantite: Quantité
