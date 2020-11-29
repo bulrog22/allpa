@@ -121,7 +121,7 @@ class JourDistribRepository extends ServiceEntityRepository
         public function recap($jourDistrib)
         {
             return $this->createQueryBuilder('j')
-            ->select('p.nom, p.conditionnement, p.unit, COUNT(p.id) as total')
+            ->select('p.nom, p.conditionnement, p.unit, SUM(lc.quantite) as total')
             ->join('j.commandes','c')
             ->join('c.ligneCommandes','lc')
             ->join('lc.product','p')
