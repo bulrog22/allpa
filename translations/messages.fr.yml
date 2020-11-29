@@ -44,6 +44,7 @@ menu:
     delivery_by_command: Par commande
     all_command: Toutes les commandes
     synthesis: Synthèse
+    recap: Récapitulatif
     parameter:
       title: Paramètres
       config: Configuration
@@ -111,6 +112,11 @@ email:
   subject:
     confirm_command: Commande Confirmée
     register_command: Commande Enregistrée
+recap:
+  title: Récapitilatif des commandes
+  nom: Nom
+  quantite: Quantité
+  conditionnement: Conditionnement
 
 alert_message:
   limit_weight: La limite de poid disponible a été dépassée !

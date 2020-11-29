@@ -114,8 +114,26 @@ class JourDistribRepository extends ServiceEntityRepository
             )
             ->setParameter('jourDistribId', $jourDistribId)
             ->setParameter('productId', $productId);
-
-        return $query->getResult();
+            
+            return $query->getResult();
+        }
+        
+        public function recap($jourDistrib)
+        {
+            return $this->createQueryBuilder('j')
+            ->select('p.nom, p.conditionnement, p.unit, COUNT(p.id) as total')
+            ->join('j.commandes','c')
+            ->join('c.ligneCommandes','lc')
+            ->join('lc.product','p')
+            ->where('c.confirmed = true')
+            ->andWhere('j = :jourDistrib')
+            ->andWhere('j.closed = false')
+            ->groupBy('j.id, p.nom')
+            ->orderBy('j.date', 'ASC')
+            ->setParameter('jourDistrib', $jourDistrib)
+            ->getQuery()
+            ->getResult()
+            ;
     }
     /*
     public function findOneBySomeField($value): ?JourDistrib

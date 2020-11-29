@@ -48,4 +48,5 @@ security:
         - { path: ^/user, roles: ROLE_ADMIN }
         - { path: ^/livree, roles: ROLE_ADMIN }
         - { path: ^/livraison, roles: ROLE_ADMIN }
+        - { path: ^/recap, roles: ROLE_ADMIN }
 

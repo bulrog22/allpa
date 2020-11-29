@@ -200,7 +200,7 @@ class DefaultController extends AbstractController
 
         $email = (new Email())
             ->from($entityManager->getRepository(Settings::class)->findOneByName('contact_email')->getValue())
-            ->to($this->getUser()->getMail())
+            ->to($commande->getUser()->getMail())
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
@@ -316,6 +316,20 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('passe_commande_index');
         }
 
+    }
+    /**
+     * @Route("/recap", name="recap", methods={"GET"})
+     */
+    public function recap(JourDistribRepository $jourDistribRepository): Response
+    {
+        $jourDistribs = $jourDistribRepository->findAll();
+        $joursRecap=[];
+        foreach ($jourDistribs as $jourDistrib) {
+            array_push($joursRecap, ['jourDistrib' => $jourDistrib->getDate(), 'products' => $jourDistribRepository->recap($jourDistrib)]);
+        }
+        return $this->render('passe_commande/recap.html.twig', [
+            'joursRecap' => $joursRecap,
+        ]);
     }
 
 }
