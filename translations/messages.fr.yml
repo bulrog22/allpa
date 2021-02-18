@@ -23,6 +23,7 @@ delete_message: Es-tu sur de vouloir le supprimer ?
 
 warning: Attention !!!
 success: C'est enregistré !
+danger: Erreur !
 
 color: Couleur
 logo: Logo de l’application

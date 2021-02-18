@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisez votre mot de passe{% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Réinitialisez votre mot de passe</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                {{ form_start(requestForm) }}
+                    {{ form_row(requestForm.mail) }}
+                    <div>
+                        <small>
+                            Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+                        </small>
+                    </div>
+
+                    <button class="btn btn-primary">Envoyer un e-mail de réinitialisation du mot de passe</button>
+                {{ form_end(requestForm) }}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
