@@ -332,4 +332,27 @@ class DefaultController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/exportcsv/{id}", name="export_csv", methods={"GET"})
+     */
+    public function exportCsv(JourDistrib $jourDistrib, JourDistribRepository $jourDistribRepository): Response
+    {
+        $commandes = $jourDistribRepository->export($jourDistrib);
+
+        $output = fopen("php://temp",'w') or die("Can't open php://output");
+        fputcsv($output, array('id','nom','prenom', 'commentaire', 'produit', 'conditionnement', 'unite', 'quantitee', 'prix_initial', 'prix_final', 'livre', 'valid'));
+        foreach($commandes as $commande) 
+        {
+            fputcsv($output, $commande);
+        }
+        rewind($output);
+        
+        $response = new Response(\stream_get_contents($output));
+        fclose($output) or die("Can't close php://output");
+        $response->headers->set('Content-Type', 'text/csv; charset=utf-8', 'application/force-download');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export_commandes.csv";');
+        
+        return $response;
+    }
+
 }

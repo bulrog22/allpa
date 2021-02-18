@@ -116,10 +116,10 @@ class JourDistribRepository extends ServiceEntityRepository
             ->setParameter('productId', $productId);
             
             return $query->getResult();
-        }
+    }
         
-        public function recap($jourDistrib)
-        {
+    public function recap($jourDistrib)
+    {
             return $this->createQueryBuilder('j')
             ->select('p.nom, p.conditionnement, p.unit, SUM(lc.quantite) as total')
             ->join('j.commandes','c')
@@ -135,6 +135,22 @@ class JourDistribRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function export($jourDistrib)
+    {
+            return $this->createQueryBuilder('j')
+            ->select('c.id, u.nom, u.prenom, c.commentaire, p.nom as produit, p.conditionnement, p.unit, lc.quantite, p.prixInit, p.prixFinal, c.livree, c.confirmed')
+            ->join('j.commandes','c')
+            ->join('c.user','u')
+            ->join('c.ligneCommandes','lc')
+            ->join('lc.product','p')
+            ->andWhere('j = :jourDistrib')
+            ->setParameter('jourDistrib', $jourDistrib)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findOneBySomeField($value): ?JourDistrib
     {
