@@ -35,7 +35,7 @@
 
             <div class="row">
             <!-- /.col -->
-            <div class="col-4">
+            <div class="col-12">
                 <button type="submit" class="btn btn-primary btn-block">Connexion</button>
             </div>
             <!-- /.col -->
@@ -50,9 +50,18 @@
 
     </form>
     <div class='card-footer'>
-            <p class='mb-0'>
-                <a href="{{ path('app_register') }}" class="text-center">Créer un compte</a>
-            </p>
+        <div class='row'>
+            <div class='col-6'>
+                <p class='mb-0'>
+                    <a href="{{ path('app_register') }}" class="text-center">Créer un compte</a>
+                </p>
+            </div>
+            <div class='col-6'>
+                <p class='mb-0'>
+                    <a href="{{ path('app_forgot_password_request') }}" class="text-center">Mot de passe oublié</a>
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
