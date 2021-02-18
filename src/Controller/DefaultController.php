@@ -343,6 +343,8 @@ class DefaultController extends AbstractController
         fputcsv($output, array('id','nom','prenom', 'commentaire', 'produit', 'conditionnement', 'unite', 'quantitee', 'prix_initial', 'prix_final', 'livre', 'valid'));
         foreach($commandes as $commande) 
         {
+            $commande['prixInit'] = number_format($commande['prixInit'], 2, ',', ' ');
+            $commande['prixFinal'] = number_format($commande['prixFinal'], 2, ',', ' ');
             fputcsv($output, $commande);
         }
         rewind($output);
