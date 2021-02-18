@@ -154,9 +154,9 @@ class ResetPasswordController extends AbstractController
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
-
+        $entityManager = $this->getDoctrine()->getManager();
         $email = (new TemplatedEmail())
-            ->from(new Address('jerome@chuletas.fr', 'ZestonGRP'))
+            ->from(new Address($entityManager->getRepository(Settings::class)->findOneByName('contact_email')->getValue(), 'ZestonGRP'))
             ->to($user->getMail())
             ->subject('Your password reset request')
             ->htmlTemplate('reset_password/email.html.twig')
