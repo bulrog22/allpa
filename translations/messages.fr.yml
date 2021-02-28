@@ -38,7 +38,9 @@ ROLE_ADMIN: Administrateur
 menu:
   admin:
     title: Administration
+    product: Produit
     add_product: Ajouter un produit
+    add_category: Ajouter une catégorie
     add_day: Jour de commande
     delivery: Suivi de livraison
     delivery_by_product: Par produit
@@ -72,6 +74,7 @@ product:
     prixInit: Prix Initial
     prixFinal: prix Final
     unit: Unité
+    category: Catégorie
 registration:
   form:
     nom: Nom
@@ -121,6 +124,7 @@ recap:
 
 alert_message:
   limit_weight: La limite de poid disponible a été dépassée !
+  limit_commande: Une commande a déjà été enregistrée !
   closed_commande: La commande est fermée !
   delete_user: Utilisateur supprimé !
   protected_user: Utilisateur protégé !

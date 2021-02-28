@@ -151,6 +151,20 @@ class JourDistribRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findCommande($user, $jourDistrib)
+    {
+        return $this->createQueryBuilder('j')
+        ->select('j')
+        ->join('j.commandes','c')
+        ->join('c.user', 'u')
+        ->andWhere('j = :jourDistrib')
+        ->andWhere('u = :user')
+        ->setParameter('jourDistrib', $jourDistrib)
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
     /*
     public function findOneBySomeField($value): ?JourDistrib
     {

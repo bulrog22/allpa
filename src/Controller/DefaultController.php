@@ -233,68 +233,85 @@ class DefaultController extends AbstractController
             
             if ($form->isSubmitted() && $form->isValid()) {
 
+                // Vérification de commande déjà passée
+                if ($jourDistrib->getLimite())
+                {
+                    $testCommande = $jourDistribRepository->findCommande($this->getUser(), $jourDistrib);
+                }
                 // On récupère la somme des poids des product de la commande
                 $poidCommande = 0;
                 foreach ($form->getData()->getLigneCommandes() as $ligneCommande ){
                     $poidCommande += $ligneCommande->getproduct()->getConditionnement() * floatval($ligneCommande->getQuantite());
                 }
                 
-                // On additionne avec le poid restant du jour
-                $poidRestant = $form->getData()->getJourDistrib()->getPoidRestant();
-                $poidRestant += $poidCommande;
-                
-                if ($poidRestant <= $form->getData()->getJourDistrib()->getTotal() or $jourDistrib->getTotal() == 0) {
+                // Si l'utilisateur n'as pas passé de commande
+                if (!$testCommande)
+                {
+                    // On additionne avec le poid restant du jour
+                    $poidRestant = $form->getData()->getJourDistrib()->getPoidRestant();
+                    $poidRestant += $poidCommande;
                     
-                    $form->getData()->getJourDistrib()->setPoidRestant($poidRestant);
-                    
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $commande->setDate(new \DateTime(date("Y-m-d H:i:s")));
-                    $commande->setUser($this->getUser());
-                    $entityManager->persist($commande);
-                    $entityManager->flush();
-    
-                    $response = $this->redirectToRoute('commande_index');
-
-                    $textRegisterCommand = $entityManager->getRepository(Settings::class)->findOneByName('text_register_command')->getValue();
-
-                    $this->addFlash(
-                        'success',
-                        'Attention ! ' . $textRegisterCommand
-                    );            
+                    if ($poidRestant <= $form->getData()->getJourDistrib()->getTotal() or $jourDistrib->getTotal() == 0) {
                         
-                    $messageEmail = $entityManager->getRepository(Settings::class)->findOneByName('text_register_command')->getValue();
-                    $messageEmail .= '</br></br><table style="border-collapse: collapse; border: 1px solid black">';
-                    $ligneCommandes = $commande->getLigneCommandes();
-                    $messageEmail .= '<tr>';
-                    $messageEmail .= '<th style="border: 1px solid black">Produit</th>';
-                    $messageEmail .= '<th style="border: 1px solid black">Conditionnement</th>';
-                    $messageEmail .= '<th style="border: 1px solid black">Prix unitaire initial</th>';
-                    $messageEmail .= '<th style="border: 1px solid black">Quantité</th>';
-                    $messageEmail .= '</tr>';
-                    foreach ($ligneCommandes as $ligneCommande) {
+                        $form->getData()->getJourDistrib()->setPoidRestant($poidRestant);
+                        
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $commande->setDate(new \DateTime(date("Y-m-d H:i:s")));
+                        $commande->setUser($this->getUser());
+                        $entityManager->persist($commande);
+                        $entityManager->flush();
+        
+                        $response = $this->redirectToRoute('commande_index');
+    
+                        $textRegisterCommand = $entityManager->getRepository(Settings::class)->findOneByName('text_register_command')->getValue();
+    
+                        $this->addFlash(
+                            'success',
+                            'Attention ! ' . $textRegisterCommand
+                        );            
+                            
+                        $messageEmail = $entityManager->getRepository(Settings::class)->findOneByName('text_register_command')->getValue();
+                        $messageEmail .= '</br></br><table style="border-collapse: collapse; border: 1px solid black">';
+                        $ligneCommandes = $commande->getLigneCommandes();
                         $messageEmail .= '<tr>';
-                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getNom() . '</td>';
-                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getConditionnement() . $ligneCommande->getProduct()->getUnit() .'</td>';
-                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getPrixInit() . ' €' . '</td>';
-                        $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getQuantite() . '</td>';
+                        $messageEmail .= '<th style="border: 1px solid black">Produit</th>';
+                        $messageEmail .= '<th style="border: 1px solid black">Conditionnement</th>';
+                        $messageEmail .= '<th style="border: 1px solid black">Prix unitaire initial</th>';
+                        $messageEmail .= '<th style="border: 1px solid black">Quantité</th>';
                         $messageEmail .= '</tr>';
+                        foreach ($ligneCommandes as $ligneCommande) {
+                            $messageEmail .= '<tr>';
+                            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getNom() . '</td>';
+                            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getConditionnement() . $ligneCommande->getProduct()->getUnit() .'</td>';
+                            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getProduct()->getPrixInit() . ' €' . '</td>';
+                            $messageEmail .= '<td style="border: 1px solid black">' . $ligneCommande->getQuantite() . '</td>';
+                            $messageEmail .= '</tr>';
+                        }
+                        $messageEmail .= '</table>';
+    
+                        $email = (new Email())
+                            ->from($entityManager->getRepository(Settings::class)->findOneByName('contact_email')->getValue())
+                            ->to($this->getUser()->getMail())
+                            ->subject($translator->trans('email.subject.register_command'))
+                            ->html($messageEmail);
+    
+                        $mailer->send($email);
+    
+                        return $response;
                     }
-                    $messageEmail .= '</table>';
-
-                    $email = (new Email())
-                        ->from($entityManager->getRepository(Settings::class)->findOneByName('contact_email')->getValue())
-                        ->to($this->getUser()->getMail())
-                        ->subject($translator->trans('email.subject.register_command'))
-                        ->html($messageEmail);
-
-                    $mailer->send($email);
-
-                    return $response;
+                    else {
+                        $this->addFlash(
+                            'warning',
+                            $translator->trans('alert_message.limit_weight')
+                        );
+                        return $this->redirectToRoute('passe_commande_index');
+                    }
+                    
                 }
                 else {
                     $this->addFlash(
                         'warning',
-                        $translator->trans('alert_message.limit_weight')
+                        $translator->trans('alert_message.limit_commande')
                     );
                     return $this->redirectToRoute('passe_commande_index');
                 }
